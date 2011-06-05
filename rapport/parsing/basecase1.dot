@@ -1,0 +1,14 @@
+digraph NFA {
+	graph [fontname=Palatino, fontsize=11, rankdir="LR", margin=0];
+	node [fontname=Palatino, fontsize=11, width="0.15", height="0.15"];
+	edge [fontname="Palatino italic", fontsize=11];
+
+	0 [shape=point, style=invis]
+	1 [shape=circle, label=""]
+	2 [shape=point, label="", style=invis]
+
+	1 -> 2 [label=a]		 
+
+	0 -> 1 [minlen="1"]
+
+}

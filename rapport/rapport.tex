@@ -1,0 +1,220 @@
+\documentclass[11pt, a4paper]{article}
+\pdfminorversion 5
+\usepackage{varioref}
+% fancyheadings: Fancy headers
+\usepackage{fancyhdr}
+% avantgar, chancery, charter, courier, helvetic, newcent, pandora,
+% palatino, times, utopia, zapfchan: Fonte
+% euler: Math font
+\usepackage{palatino}
+\usepackage{upgreek}
+%\usepackage{newcent}
+% listings: For listing code with syntax highlighting
+\usepackage{listings}
+% graphicx: Include graphic-files
+\usepackage{graphicx}
+\usepackage{subfigure}
+%\usepackage{wrapfig}
+% amsmath: more mathcommands
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+% a4wide: for longer lines
+%\usepackage{a4wide}
+% Package for infix arithmetic notation
+\usepackage{calc}
+% Defines if/then/else macros for conditional text
+\usepackage{ifthen}
+% Place selected parts of a document in landscape
+\usepackage{verbatim}
+
+\usepackage[table]{xcolor}
+
+\usepackage{url}
+
+\usepackage{todonotes}
+
+\usepackage{listings}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{thmtools}
+
+\usepackage{ctable}
+
+\usepackage[
+  pdftitle={A streaming full regular expression parser},
+  pdfauthor={Line Bie Pedersen}
+]{hyperref}
+
+%------------------------------------------------------------
+% Set up example environment
+%------------------------------------------------------------
+%\theoremstyle{definition}
+%\newtheorem{example}{Example}
+%\newtheorem{definition}{Definition}
+
+\declaretheoremstyle[
+spaceabove=6pt, spacebelow=6pt,
+headfont=\normalfont\bfseries,
+notefont=\mdseries, notebraces={(}{)},
+bodyfont=\normalfont,
+postheadspace=1em,
+qed=\ensuremath{\ast}
+]{mystyle}
+\declaretheorem[style=mystyle]{styledtheorem}
+
+\declaretheorem[name=Example, style=mystyle]{example}
+\declaretheorem[name=Definition, style=mystyle]{definition}
+
+%\usepackage[standard,thmmarks]{ntheorem}
+
+
+%------------------------------------------------------------
+% Setting up the ntheorems
+%------------------------------------------------------------
+% Examples
+%% \theoremstyle{plain}
+%% \theorembodyfont{\upshape}
+%% \theoremsymbol{\ensuremath{\ast}}
+%% \theoremseparator{}
+%% \renewtheorem{Example}{Example}
+
+%% \theoremstyle{empty} 
+%% \theorembodyfont{\upshape}
+%% \theoremsymbol{\ensuremath{\ast}}
+%% \theoremseparator{}
+%% \newtheorem{contexampleinner}{} 
+
+%% \newenvironment{contExample}[1]{% 
+%% \begin{contexampleinner}[Example~\ref{#1} 
+%% (Continued)]}{\end{contexampleinner}} 
+
+%% % Definitions
+%% \theoremstyle{plain}
+%% \theoremsymbol{\ensuremath{\clubsuit}}
+%% \theoremseparator{.}
+%% \theoremprework{\bigskip\hrule}
+%% \theorempostwork{\hrule\bigskip}
+%% \renewtheorem{Definition}{Definition}
+
+
+
+
+%------------------------------------------------------------
+% Set up listings environment
+%------------------------------------------------------------
+%\lstloadlanguages{}
+\makeatletter
+\lstset{
+  columns=fullflexible,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  showstringspaces=f,
+  keepspaces=true,
+%  numbers=left, 
+%  numberstyle=\tiny, 
+%  stepnumber=2, 
+%  numbersep=5pt, 
+  language=C,
+  breaklines=true,
+}
+\makeatother
+
+%------------------------------------------------------------
+% Set up headers and footers
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhead{}
+% Put pagenumber centered on bottom of page
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+% Put section number and name on top left of page
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{}}
+\lhead{\fancyplain{}{\leftmark}}
+% Make sure the rest is blank
+\chead{}\rhead{}
+
+
+%------------------------------------------------------------
+% My own lists
+%------------------------------------------------------------
+\newlength{\Mylen}
+\newcommand{\entrylabel}[1]{%
+  \settowidth{\Mylen}{#1}%
+  \ifthenelse{\lengthtest{\Mylen > \labelwidth}}%
+  {\parbox[b]{\labelwidth}%
+    {\makebox[0pt][l]{#1}\\}}%
+  {#1}%
+  \hfil\relax}
+\newenvironment{entry}
+{\begin{list}{}%
+    {\renewcommand{\makelabel}{\entrylabel}%
+      \setlength{\labelwidth}{35pt}%
+      \setlength{\leftmargin}{\labelwidth+\labelsep}%
+    }%
+  }%
+{\end{list}}
+
+\title{A streaming full regular expression parser}
+\author{Line Bie Pedersen 300976}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\clearpage
+\setcounter{page}{1}
+\pagenumbering{roman}
+\input{abstract}
+\todo{Missing abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+\renewcommand{\listtheoremname}{List of definitions}
+\listoftheorems[ignoreall, show={definition}]
+\clearpage
+\renewcommand{\listtheoremname}{List of examples}
+\listoftheorems[ignoreall, show={example}]
+%\section*{List of Examples}
+
+%\theoremlisttype{all}
+%\listtheorems{Example}
+\clearpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\input{introduction}
+%\cite{Cox2007}
+\clearpage
+\input{regular}
+\clearpage
+\input{design}
+\clearpage
+\input{implementation}
+\clearpage
+
+
+\input{optimizations}
+\clearpage
+\input{benchmarks}
+\clearpage
+\input{relatedwork}
+\clearpage
+\input{futurework}
+\clearpage
+\input{conclusion}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{library}
+\clearpage
+\appendix
+\input{appendix}
+
+\end{document}

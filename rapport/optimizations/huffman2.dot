@@ -1,0 +1,39 @@
+digraph huffman {
+
+graph [fontname=Palatino, fontsize=11,  margin=0
+      compound="true"];
+node [fontname=Palatino, fontsize=11, width="0.15", height="0.15"];
+edge [fontname="Palatino sans serif", fontsize=11];
+
+1 [style=rounded, shape=record, label="{'0' | 11}"]
+2 [style=rounded, shape=record, label="{'1' | 11}"]
+3 [style=rounded, shape=record, label="{':' | 22}"]
+4 [style=rounded, shape=record, label="{'\|' | 11}"]
+5 [style=rounded, shape=record, label="{'=' | 11}"]
+6 [style=rounded, shape=record, label="{'\\' | 11}"]
+7 [style=rounded, shape=record, label="{'b' | 11}"]
+8 [style=rounded, shape=record, label="{'t' | 0}"]
+
+9  [shape=circle, label="11"]
+10 [shape=circle, label="22"]
+11 [shape=circle, label="22"]
+12 [shape=circle, label="22"]
+13 [shape=circle, label="44"]
+14 [shape=circle, label="44"]
+15 [shape=circle, label="88"]
+
+9 -> 1   [dir=none, label="0"]
+9 -> 8   [dir=none, label="1"]
+10 -> 2  [dir=none, label="0"]
+10 -> 4  [dir=none, label="1"]
+11 -> 5  [dir=none, label="0"]
+11 -> 6  [dir=none, label="1"]
+12 -> 7  [dir=none, label="0"]
+12 -> 9  [dir=none, label="1"]
+13 -> 3  [dir=none, label="0"]
+13 -> 10 [dir=none, label="1"]
+14 -> 11 [dir=none, label="0"]
+14 -> 12 [dir=none, label="1"]
+15 -> 13 [dir=none, label="0"]
+15 -> 14 [dir=none, label="1"]
+}

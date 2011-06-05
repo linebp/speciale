@@ -1,0 +1,130 @@
+\section{Future work}
+
+\todo[inline]{Introduction}
+
+\subsection{Extending the current regular expression feature-set}
+
+Regular expressions in real world usage is more complicated than what
+we have described in this thesis. Here is a list with some of the
+features that the regular expressions presented here could be extended
+with.
+
+\paragraph{Counted repetitions} A shorthand for matching at least $n$, but
+no more than $m$ times can easily be implemented. Using industry
+standard notation, the repetition $e\{3\}$ expands to $eee$,
+$e\{2,5\}$ expands to $eee?e?e?$ and $e\{2,\}$ expands to $eee*$,
+where $e$ is some regular expression.
+
+\paragraph{Non-greedy or lazy quantifiers} Traditionally the quantifiers will
+match as much as possible, they are greedy. Non-greedy quantifiers
+will match as little as possible.
+
+\paragraph{Character class shorthands} Often used character classes,
+like \textsf{[A-Za-z0-9\_]} for a word character, often has
+shorthands. It makes for shorter and more readable regular
+expressions.
+
+\paragraph{Unanchored matches} In this thesis we have assumed that the
+regular expression will match the whole of the string. In practice, it
+is often useful to find out if the regular expression matches a
+substring of the input string. An unanchored match has implicit
+non-greedy \textsf{.*} appended and prepended. Here it would also be
+very useful to have the ability to restart matching where the previous
+left of. 
+
+\paragraph{More escape sequences} Special
+escape sequences for characters like tab, newline, return, form feed,
+alarm and escape are useful. They are more readable in a regular
+expression than the actual characters themselves, because they will
+show as blank space in most editors. 
+
+\paragraph{Assertions} Assertions does not consume characters from the
+input string. They assert properties about the surrounding text. Most
+languages and libraries provide the start and end of line and word
+boundary assertions. There are also general assertions, like the
+lookahead assertion \textsf{(?=$r$)} which asserts that the text after
+the current matches $r$.
+
+\paragraph{Case insensitive matching} This could be implemented as the
+poor man's version of the case insensitive match: Every character $a$
+matched case insensitively is expanded to a character class
+$[aA]$. This might not be the best idea performance wise, since the
+character classes are so expensive to simulate.
+
+\subsection{Internationalization}
+
+What this long word covers over is basically integrating other
+character sets than the ASCII. Internationalization also makes
+character class shorthands mean different things. The word character
+class from above would vary according to locale, for example in a
+danish setting it would make more sense defining it as:
+\textsf{[A-Åa-å0-9\_]}.
+
+
+\subsection{More and better filters}
+
+\paragraph{Copy} A copy filter can easily be implemented, just write
+input to two output channels. These channels could be standard input
+and error. An effect very similar can already be achieved with the
+utility \texttt{tee}, this will read from standard input and write to
+standard output and files.
+
+\paragraph{Serialize} The serialization filter
+dumps the contents of the captured groups with no formatting. It would
+be beneficial to the user to have some kind of formatting to
+distinguish the different captured groups.
+
+\paragraph{Applying regular expressions line by line} It would not be
+enough to just insert a end-of-stream character after every
+new-line. We would probably have to rethink the protocol as well. We
+would need some way of signaling to the programs downstream that this
+is a new match, but the same regular expression should be applied. 
+
+\subsection{Concurrency}
+
+We can not split up neither the regular expression nor the input
+string for concurrent processing. To split up the regular expression,
+we would need to know exactly how much the sub-regular expressions
+each consume of the input string. This we cannot know unless we
+actually do the match. Splitting up the string instead would also
+require knowledge we can only gain by actually performing the match,
+we would need to know in what state the simulation process should
+start at this particular input string symbol. 
+
+The current setup is a pipeline. Only the streaming filters are able
+to process data upon reception, the non-streaming filters gathers all
+data in the input stream before beginning the processing. On most
+Unix-like systems it is possible to chain programs together with
+pipes. The output of a program is directly fed to the input of the
+next program in the chain. This is usually implemented so that all the
+programs in the chain is started at the same time. The scheduler is
+then responsible for managing the processes. Although the problem is
+not parallel in nature, by dividing the solution into discrete
+components we can at least utilize each streaming component
+simultaneously.
+
+%% This problem is not embarrassingly parallel, but we do have some
+%% potential for concurrency. Our information only flows one way and the
+%% values in our streams are only dependent on the previous values, the
+%% latter only applies to our streaming programs. Once a value has been
+%% outputted, there is nothing stopping the next program in the pipeline
+%% processing this value. Whether or not this potential is exploited is
+%% dependent on the available resources and the scheduler. 
+
+
+
+To gain more control over the concurrency we could implement the
+programs as processes. This would allow us to tweak the scheduling
+even further. It is however doubtful that this will give a performance
+boost based on better control over the concurrency, as the scheduler
+already does a good job of this. The performance boost will more
+likely come from faster communication channels. 
+
+In a Unix environment there will be no loss of data in a pipeline,
+if for example a program can produce data faster than the receiving
+program can read. The data will be buffered until the receiving
+program is ready to read the data. If the buffer fills up, the
+producer will be suspended until there again is room in the
+buffer. This could mean we are buffering data twice, once in the
+buffer used by the operating system between programs in a pipeline and
+once in the buffer used by the programs own input and output.

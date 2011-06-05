@@ -1,0 +1,233 @@
+\section{Regular expressions and finite automatons}
+
+%% \todo[inline]{MAn bruger dem til at beskrive tekststrenge med bestemte
+%% mønstre, prøv at sætte noget lettere fordøjeligt ind før definitionerne}
+
+A regular language is a possibly infinite set of finite sequences of
+symbols from a finite alphabet.
+
+A formal definition of regular languages:
+\begin{definition}[Regular language]
+  The regular language over the alphabet $\Sigma$ is defined
+  recursively as:
+  \begin{itemize}
+  \item The empty language $\emptyset$.
+  \item The empty string language $\{\upvarepsilon\}$.
+  \item The singleton language $\{a\}$, for any symbol $a\in \Sigma$.
+  \item If $L_r$ and $L_s$ are both regular languages then the union
+    $L_r \cup L_s$ is also a regular language.
+  \item If $L_r$ and $L_s$ are both regular languages then the
+    concatenation $L_r \bullet L_s$ is also a regular language.
+  \item if $L$ is a regular language then the Kleene star $L*$ is also
+    a regular language.
+  \end{itemize}
+\end{definition}
+
+
+\subsection{Regular expressions}
+
+Regular expressions are used to denote regular languages. They are
+written in a formal language consisting of two types of characters:
+Meta characters and literal characters. The meta characters have
+special meaning and are interpreted by a regular expression
+engine. The basic meta characters are parenthesis, the alternation
+operator and the Kleene star. Parenthesis provides grouping,
+alternation allows the choice between different text strings and the
+Kleene star repeats. The literal characters have no special meaning
+and match literally.
+
+%% \begin{definition}[Regular language]
+%% A regular language over the alphabet $\Sigma$ can be defined
+%% recursively as follows:
+%% \begin{description}
+%% \item[Basis clauses] 
+%%   \begin{itemize}
+%%   \item The empty language $\emptyset$
+%%   \item The empty string language $\{\upvarepsilon\}$
+%%   \item The singleton language $\{a\}$, for any symbol $a\in \Sigma$
+%%   \end{itemize}
+%%   are all regular languages
+%% \item[Inductive clauses]
+%%   If $L_r$ and $L_s$ are both regular languages then
+%%   \begin{itemize}
+%%   \item The union $L_r \cup L_s$
+%%   \item The concatenation $L_r \bullet L_s$
+%%   \item The kleene star $L_r*$ 
+%%   \end{itemize}
+%%   are all regular languages
+%% \item[Extremal clause] No other languages over $\Sigma$ are regular
+%% \end{description}
+%% \end{definition}
+
+%% Regular expressions are used to regular languages:
+
+A formal definition of regular expressions:
+\begin{definition}[Regular expression]
+  \label{def:regexp}
+  A regular expression over an alphabet $\Sigma$ can be defined as follows:
+\begin{itemize}
+\item An empty string, $\upvarepsilon$, and any character from the
+  alphabet $\Sigma$
+\item If $r_1$ and $r_2$ are regular expressions, then the
+  concatenation $r_1r_2$ are also a regular expression
+\item If $r_1$ and $r_2$ are regular expressions, then the alternation
+  $r_1|r_2$ is also a regular expression
+\item If $r$ is a regular expression, then so is the repetition $r*$
+\end{itemize}
+
+Any expression is a regular expression if it follows from a finite
+number of applications of the above rules.
+\end{definition}
+
+The precedence of the operators are: repetition, concatenation and
+alternation, from highest to lowest. Concatenation and alternation are
+both left-associative. 
+
+\begin{example}[Regular expression]
+  Here we have a somewhat complicated example of a regular expression
+  that demonstrates the basic operators.
+\label{ex:regular1}
+Consider the sentence:
+\begin{quote}
+\textsl{This book was written using 100\% recycled
+  words.}\footnote{Terry Pratchett, Wyrd Sisters}
+\end{quote}
+
+Other writings such as papers and novels also use words. If we
+want to catch sentences referring to these writings as well, we can
+use the regular expression: \texttt{(book|paper|novel)}. 
+
+To match the number 100 in the sentence, we could use the regular
+expression \texttt{100}. In most cases however we will not know
+beforehand how many words are recycled, so we may want to use the
+regular expression \texttt{(0|1|2|3|4|5|6|7|8|9)*}, which will match
+any natural number.
+
+With this in mind we can write a regular expression to match our
+sentence:
+\begin{quote}
+  \texttt{This (book|paper|novel) was written using \\
+    (0|1|2|3|4|5|6|7|8|9)*\% recycled words.}
+\end{quote}
+
+\end{example}
+
+\subsection{Extensions to the regular expressions}
+
+Many tools extend the regular expressions presented in the previous
+section. They add new notation to make it easier to specify
+patterns. In this section we present the extensions to definition
+\vref{def:regexp} we have made: Extra quantifiers, character classes,
+a quoting character, a wild card and some non-capturing parenthesis.
+
+\begin{itemize}
+\item The quantifier $+$ causes the regular expression $r$ to be
+  matched one or more times. This can also be written as $rr*$
+\item The quantifier $?$ causes the regular expression $r$ to be
+  matched zero or one times. This can also be written as
+  $\upvarepsilon|r$
+\item A character class is delimited by $[]$ and matches exactly one
+  character in the input string. Special characters loose their
+  meaning inside a character class; $*$, $+$, $?$, $($, $)$ and so on
+  are treated as literals.
+
+  Characters can be listed individually, e.g. \texttt{[abc]}, or they
+  can be listed as ranges with the range operator: $-$,
+  e.g. \texttt{[a-z]}. These can be rewritten in terms of our original
+  regular expression: \texttt{a|b|c} and \texttt{a|b|c...x|y|z}
+  respectively.
+
+  To match characters not within the range, the complement operator is
+  used. \texttt{\^{}} used as the first character in a character
+  class, elsewhere it will simply match literally, indicates that only
+  characters not listed in the character class should
+  match. E.g. \texttt{[\^{}\^{}]} will match anything but a
+  \texttt{\^{}}
+\item The quoting character \textsf{\textbackslash} will allow the
+  operators to match literally. We use \textsf{\textbackslash *} to
+  match a \textsl{*}.
+\item The wild card \texttt{.} will match any character, including a
+  newline.
+\item For the non-capturing parenthesis we have the choice of
+  notation. Here we will list some of the options, where $r$ is some
+  regular expression:
+  \begin{itemize}
+  \item The industry standard, to which Perl, Python, RE2 and most
+    others adhere is: $(?:r)$.
+  \item Perl 6 \cite{Wall2002} suggests use of square parenthesis instead:
+    $[r]$. These are however already in use by the character classes.
+  \item A more intuitive notation could be using single parenthesis
+    for non-capturing, $(r)$, and double parenthesis for capturing,
+    $((r))$.
+  \item Since we are not using $\{r\}$ as special notation, this could
+    be a good use, it surely would be the simplest to implement. This
+    is however used in the repetition notation in industry standard.
+  \end{itemize}
+  
+  Since there is a standard, we will adhere to it, and use $(?:r)$ for
+  non-capturing parenthesis.
+\end{itemize}
+\begin{example}
+
+As we saw in example \ref{ex:regular1}, we can match a natural number
+with the regular expression \texttt{(0|1|2|3|4|5|6|7|8|9)*}. Using the
+expansions to regular expressions above, we can rewrite this as:
+\begin{description}
+\item[\texttt{[0-9]*}] This literally means the same thing.
+\item[\texttt{[0-9]+}] We can use a different repetition operator and
+  require there be at least one digit.
+\item[\texttt{[1-9][0-9]*}] This matches any natural number as
+  well, but it will not match any preceding zeros. This is a
+  refinement, in that it will match fewer text strings than the first
+  expression. This is however not always an advantage.
+\end{description}
+\end{example}
+
+
+\subsection{Finite automatons}
+
+Finite automatons are used to solve a wide array of problems. In this
+thesis we will focus on finite automatons as they are used with
+regular expressions. A finite state machine consists of a number of
+states and transitions between states. One state is marked as the
+initial state, a set of states is marked as final. To each transition
+there is attached a condition. Input is consumed in sequence, for each
+symbol transitions are taken when their attached condition are met. If
+the simulation ends in a final state, the finite automaton is said to
+accept the input.
+
+Finite automatons can be divided in two categories: The deterministic
+(DFA) and the non-deterministic (NFA) finite automaton. This
+distinction is mostly relevant in practice, as they are
+equivalent. NFAs and DFAs recognize exactly the regular languages.
+
+
+\begin{description}
+\item[NFA] For each pair of input symbol and state, there may be more
+  than next states. This means that there may be more than one path
+  through an NFA for an input string.
+
+  The $\upvarepsilon$-transitions are an extension of the NFA. These
+  are special transitions that can be taken without consuming any
+  input symbols. This also has mainly practical implications, NFAs
+  with and without $\upvarepsilon$-transitions are equivalent.
+
+\item[DFA] For each pair of input symbol and state, there may be only
+  one next state. This means there is only one path through the DFA
+  for an input string.
+\end{description}
+
+\input{parsing}
+
+\subsection{Summary}
+
+Regular expressions are a widely used and popular tool. The features
+offered and the semantics vary. For example some will offer
+backreferencing and others will not, some will offer a leftmost match
+in alternations others will offer a longest match. The underlying
+implementation and performance vary widely. A regular expression
+engine will solve some problems more efficiently than others.
+
+%% \todo[inline]{write something about how regular expressions can be
+%%   very powerful but the underlying design and its performance can vary
+%% widely}

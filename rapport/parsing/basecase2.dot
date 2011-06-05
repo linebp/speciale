@@ -1,0 +1,19 @@
+digraph NFA {
+	rankdir="LR";
+	graph [fontname=Palatino, fontsize=11];
+	node [fontname=Palatino, fontsize=11, width="0.15", height="0.15"];
+	edge [fontname="Palatino italic", fontsize=11];
+
+	0 [shape=point, style=invis]
+
+	subgraph cluster_1 {
+		style=rounded;
+		color=black;
+		1 [shape=circle, label=""]
+		2 [shape=doublecircle, label=""]
+		1 -> 2 [style=invis]		 	
+	}	
+
+	0 -> 1 []
+
+}

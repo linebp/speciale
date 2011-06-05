@@ -1,0 +1,43 @@
+\section{Extending Dub\'{e} and Feeleys algorithm}
+
+An efficient algorithm for parsing with regular expressions is
+presented by Dubè and Feeley in their paper from 2000
+\cite{Dube2000}. The algorithm produces a parse tree, describing how
+string $w$ matches regular expression $r$. For a fixed regular
+expression the algorithm runs in time linear in the size of $w$. 
+
+To build the parse tree, we first construct a NFA corresponding to
+$r$. The article specifies a method for construction, but this can be
+any NFA constructed so that the number of states is linear in the
+length of $r$, this includes those constructed with Thompsons method
+from \cite{Thompson1968}. This restriction ensures the runtime
+complexity. Until this point there is no difference from a standard
+NFA, but Dubé and Feeley then add strings to some of the edges. These
+strings are outputted whenever the associated edge is followed. When
+the outputted strings are then read in order they form a parse tree.
+
+
+
+
+%% In the paper \cite{Dube2000} it is demonstrated how parsing with
+%% regular expressions can be done in time linear in the length of the
+%% input string. The technique presented provides a parse tree and
+%% imposes no restrictions on the type of regular expression used. 
+
+
+%% To build the parse tree, describing how string $w$ matches regular
+%% expression $r$, we first construct a NFA corresponding to $r$. What
+%% Dubé and Feeley then do is add strings to some of the edges in the
+%% NFA. These strings are output whenever an edge is followed. When the
+%% strings are then read in order they form a parse tree. This is the
+%% main difference from a standard Thompson simulation of a NFA.
+
+
+
+The idea of having output attached to edges is further developed in
+the paper \cite{Henglein2010}. The parse trees Dubè and Feeleys method
+gives is rather verbose and can be more compactly represented:
+Whenever a node has more than one edge leaving, a string is added to
+the edges leaving, containing just enough information to decide which
+edge was taken.
+

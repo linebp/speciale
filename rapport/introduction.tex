@@ -1,0 +1,115 @@
+\section{Introduction}
+
+This masters thesis presents a design and an implementation of a
+regular expression engine with focus on memory consumption.
+
+Regular expressions is an important tool for matching strings of
+text. In many text editors and programming languages they provide a
+concise and flexible way of searching and manipulating text. They find
+their use in areas like data mining, spam detection, deep packet
+inspection and in the analysis of protein sequences, see
+\cite{pedersen2010}.
+
+
+\subsection{Motivation}
+
+Regular expressions is a popular area in computer science and has seen
+much research. They are used extensively both in academia and in
+business. Many programming language offer regular expressions in some
+form, either as an embedded feature or as a stand alone
+library. There are many different flavors of regular expression and
+implementations, each adapted to some purpose. 
+
+Many of the existing solutions gives no guarantees on their memory
+consumption. In this project we will focus on a streaming solution,
+that is we will, where possible, use a constant amount of memory for a
+fixed regular expression. We will build a general framework to this
+purpose.
+
+
+%% Regular expressions has seen much research. Det er brugt mange steder
+%% i erhvervslivet. Mange programmeringssprog tilbyder regulære udtryk,
+%% enten indbygget eller som et seperat bibliotek. DEr findes mange
+%% forskellige modeller tilpasset diverse formål. 
+
+%% I det her projekt vil vi forsøge at at løse problemet ved at bruge
+%% konstant hukommelse(fraregnet pladsen til det regulære udtryk). Mange
+%% af de prodrukter der eksisterer idag giver ingen garantier på
+%% hukommelsesforbruget. Vi vil forsøge at stille et generelt framework
+%% op som kan løse dette
+
+
+\subsection{Definitions, conventions and notation}
+
+The empty string is denoted as $\upvarepsilon$. $\Sigma$ is used to
+denote the alphabet, or set of symbols, used to write a string or a
+regular expression. 
+
+Automatons are represented as graphs, where states are nodes and
+transitions are edges. The start state has an arrow starting nowhere
+pointing to it. The accepting state is marked with double
+circles. Edges has an attached string, indicating on which input
+symbol this particular transition is allowed.
+
+Regular expressions will be written in sans serif font:
+\textsf{a\textbar b} and strings will be written slanted: \textsl{The
+  cake is a lie}.
+
+
+\subsection{Objectives and limitations}
+
+The objectives of this thesis is to extend existing theory and design,
+implement and evaluate a prototype. We will be extending theory by
+Dub\'{e} and Feeley \cite{Dube2000} and Henglein and Nielsen
+\cite{Henglein2010}. The extended theory will be used in designing a
+streaming regular expression engine. The design will be implemented in
+a prototype and finally we will evaluate and compare with existing
+solutions.
+
+We aim to address these topics in this thesis:
+
+\begin{itemize}
+\item Extend existing theory by Dub\'{e} and Feeley \cite{Dube2000}
+  and Henglein and Nielsen \cite{Henglein2010}.
+
+\item Create a prototype implementation
+
+\item Compare the prototype with existing solutions 
+
+\item Conclude and propose extensions and improvements on the work
+\end{itemize}
+
+\subsubsection{Limitations}
+
+The focus is on designing and implementing a streaming regular
+expression engine. There are many general purpose features and
+optimizations that can be considered necessary in a full-fledged
+regular expression engine that are only peripherally considered
+here. In situations where we are faced with a choice, we have
+generally favored simplicity and robustness.
+
+%% Fokus på at bevise ideen ikke et stort featuresæt, den kan ikke serach
+%% and replace
+
+\subsection{Summary of contributions}
+
+The main contribution of this thesis work is a streaming regular
+expression engine based on Dub\'{e} and Feeley \cite{Dube2000} and
+Henglein and Nielsen \cite{Henglein2010}. We present, implement and
+evaluate a working prototype that demonstrates that our solution is
+both technically viable and in many cases preferable from a
+resource-consumption standpoint compared to existing industry
+solutions.
+
+\subsection{Thesis overview}
+
+Section 2 gives an introduction to regular expressions and finite
+automatons. In section 3 we describe the architecture of our
+implementation. Section has the implementation specific details. In
+section 5 we describe the behavior of the implemented prototype,
+suggest some optimizations and describe how we implemented some of
+them. Section 6 compares our implementation to existing
+implementations. In section 7 we have the related work. Section 8
+describes future work, improvements to the design and the
+implementation of the prototype. Lastly we have the conclusion on our
+theoretical and practical work in section 9.

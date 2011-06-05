@@ -1,0 +1,165 @@
+\documentclass[11pt, a4paper]{article}
+\pdfminorversion 5
+\usepackage{varioref}
+% fancyheadings: Fancy headers
+\usepackage{fancyhdr}
+% avantgar, chancery, charter, courier, helvetic, newcent, pandora,
+% palatino, times, utopia, zapfchan: Fonte
+% euler: Math font
+\usepackage{palatino}
+\usepackage{upgreek}
+%\usepackage{newcent}
+% listings: For listing code with syntax highlighting
+\usepackage{listings}
+% graphicx: Include graphic-files
+\usepackage{graphicx}
+\usepackage{subfigure}
+%\usepackage{wrapfig}
+% amsmath: more mathcommands
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+% a4wide: for longer lines
+%\usepackage{a4wide}
+% Package for infix arithmetic notation
+\usepackage{calc}
+% Defines if/then/else macros for conditional text
+\usepackage{ifthen}
+% Place selected parts of a document in landscape
+\usepackage{verbatim}
+
+\usepackage{url}
+
+\usepackage{todonotes}
+
+\usepackage{listings}
+
+\usepackage{amsmath}
+
+\usepackage{clrscode}
+
+\usepackage[standard,thmmarks]{ntheorem}
+
+
+%------------------------------------------------------------
+% Setting up the ntheorems
+%------------------------------------------------------------
+% Examples
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\theoremsymbol{\ensuremath{\ast}}
+\theoremseparator{}
+\renewtheorem{Example}{Example}
+
+\theoremstyle{empty} 
+\theorembodyfont{\upshape}
+\theoremsymbol{\ensuremath{\ast}}
+\theoremseparator{}
+\newtheorem{contexampleinner}{} 
+
+\newenvironment{contExample}[1]{% 
+\begin{contexampleinner}[Example~\ref{#1} 
+(Continued)]}{\end{contexampleinner}} 
+
+% Definitions
+\theoremstyle{plain}
+\theoremsymbol{\ensuremath{\clubsuit}}
+\theoremseparator{.}
+\theoremprework{\bigskip\hrule}
+\theorempostwork{\hrule\bigskip}
+\renewtheorem{Definition}{Definition}
+
+
+%------------------------------------------------------------
+% Set up listings environment
+%------------------------------------------------------------
+%\lstloadlanguages{}
+\makeatletter
+\lstset{
+  columns=fullflexible,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  showstringspaces=f,
+  keepspaces=true,
+  numbers=left, 
+  numberstyle=\tiny, 
+  stepnumber=2, 
+  numbersep=5pt, 
+  language=C,
+}
+\makeatother
+
+%------------------------------------------------------------
+% Set up headers and footers
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhead{}
+% Put pagenumber centered on bottom of page
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+% Put section number and name on top left of page
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{}}
+\lhead{\fancyplain{}{\leftmark}}
+% Make sure the rest is blank
+\chead{}\rhead{}
+
+
+%------------------------------------------------------------
+% My own lists
+%------------------------------------------------------------
+\newlength{\Mylen}
+\newcommand{\entrylabel}[1]{%
+  \settowidth{\Mylen}{#1}%
+  \ifthenelse{\lengthtest{\Mylen > \labelwidth}}%
+  {\parbox[b]{\labelwidth}%
+    {\makebox[0pt][l]{#1}\\}}%
+  {#1}%
+  \hfil\relax}
+\newenvironment{entry}
+{\begin{list}{}%
+    {\renewcommand{\makelabel}{\entrylabel}%
+      \setlength{\labelwidth}{35pt}%
+      \setlength{\leftmargin}{\labelwidth+\labelsep}%
+    }%
+  }%
+{\end{list}}
+
+\title{Speciale}
+\author{Line Bie Pedersen 300976}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract}
+
+\tableofcontents
+
+\section*{List of Examples}
+
+\theoremlisttype{all}
+\listtheorems{Example}
+
+\input{introduction}
+%\cite{Cox2007}
+
+\input{regular}
+
+
+\input{parsing}
+
+\input{matching}
+
+\input{filters}
+
+\input{implementation}
+
+\section{Conclusion}
+
+
+\bibliographystyle{plain}
+\bibliography{library}
+
+\end{document}
