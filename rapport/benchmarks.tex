@@ -429,6 +429,33 @@ other choice would have been making a shell-script and used a loop and
 
 \subsection{Conclusion}
 
-\todo[inline]{Missing}
+We observe that our programs do not suffer from either the
+backtracking worst-case or the DFA worst-case problems.
+
+\paragraph{Simple acceptance} We can compete on even footing with the
+best when it comes to a simple acceptance decision. Our main program
+combined with the 'match' filter is fast and uses memory linear in the
+size of the regular expression.
+
+\paragraph{Capturing groups} When it comes to the more complicated
+task of capturing the contents of groups, we are lagging behind. The
+task of capturing groups is achieved by a 4 programs long pipe in our
+framework. Even if all of them only used memory linear in the length
+of the regular expression, the overhead of running separate programs
+add up.  The 'trace' filter uses memory linear in the size of the
+input string. While this is obviously not quite as good as the other
+filters, it is nevertheless a good result, we have managed to separate
+this functionality into an independent component.
+
+An obvious drawback is the constant basic costs of having four
+individual programs instead of one. We note however that this is
+currently completely unoptimized and that this cost will not rise
+relative to either input. This cost is still quite low, the problems
+of this increased cost would only appear in a demanding environment
+such as en embedded device.
+
+The other main problem is the blow up of the size of the mixed
+bit-values. We have previously discussed potential solutions to this
+problem.
 
 
