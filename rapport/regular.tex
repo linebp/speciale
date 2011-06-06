@@ -4,9 +4,10 @@
 %% mønstre, prøv at sætte noget lettere fordøjeligt ind før definitionerne}
 
 A regular language is a possibly infinite set of finite sequences of
-symbols from a finite alphabet.
+symbols from a finite alphabet.  It is essentially a formal language that must fulfill a number
+of properties. \todo{wikipedia havde noget interessant at sige men vi kan ikke bare kopiere det ind :(}
 
-A formal definition of regular languages:
+We provide this formal definition of regular languages:
 \begin{definition}[Regular language]
   The regular language over the alphabet $\Sigma$ is defined
   recursively as:
@@ -18,10 +19,11 @@ A formal definition of regular languages:
     $L_r \cup L_s$ is also a regular language.
   \item If $L_r$ and $L_s$ are both regular languages then the
     concatenation $L_r \bullet L_s$ is also a regular language.
-  \item if $L$ is a regular language then the Kleene star $L*$ is also
+  \item if $L$ is a regular language then the Kleene star\footnote{We use the conventional definition of the Kleene star; a unary operator meaning ``zero or more'' } $L*$ is also
     a regular language.
   \end{itemize}
 \end{definition}
+
 
 
 \subsection{Regular expressions}
@@ -30,11 +32,12 @@ Regular expressions are used to denote regular languages. They are
 written in a formal language consisting of two types of characters:
 Meta characters and literal characters. The meta characters have
 special meaning and are interpreted by a regular expression
-engine. The basic meta characters are parenthesis, the alternation
+engine. Some of the basic meta characters include parenthesis, the alternation
 operator and the Kleene star. Parenthesis provides grouping,
 alternation allows the choice between different text strings and the
-Kleene star repeats. The literal characters have no special meaning
-and match literally.
+Kleene star repeats. 
+
+The literal characters have no special meaning; they simply match literally.
 
 %% \begin{definition}[Regular language]
 %% A regular language over the alphabet $\Sigma$ can be defined
@@ -115,10 +118,10 @@ sentence:
 \subsection{Extensions to the regular expressions}
 
 Many tools extend the regular expressions presented in the previous
-section. They add new notation to make it easier to specify
+section. A typical extensions is new notation to make it easier to specify
 patterns. In this section we present the extensions to definition
-\vref{def:regexp} we have made: Extra quantifiers, character classes,
-a quoting character, a wild card and some non-capturing parenthesis.
+\vref{def:regexp} we have made: Additional quantifiers, character classes,
+a quoting symbol, a wild card and non-capturing parenthesis.
 
 \begin{itemize}
 \item The quantifier $+$ causes the regular expression $r$ to be
@@ -159,9 +162,9 @@ a quoting character, a wild card and some non-capturing parenthesis.
   \item A more intuitive notation could be using single parenthesis
     for non-capturing, $(r)$, and double parenthesis for capturing,
     $((r))$.
-  \item Since we are not using $\{r\}$ as special notation, this could
-    be a good use, it surely would be the simplest to implement. This
-    is however used in the repetition notation in industry standard.
+  \item A currently unused option is $\{r\}$ as special notation, which would
+  be simple to implement. This
+    is however the industry standard for repetition notation\todo{changed}.
   \end{itemize}
   
   Since there is a standard, we will adhere to it, and use $(?:r)$ for
@@ -179,7 +182,7 @@ expansions to regular expressions above, we can rewrite this as:
 \item[\texttt{[1-9][0-9]*}] This matches any natural number as
   well, but it will not match any preceding zeros. This is a
   refinement, in that it will match fewer text strings than the first
-  expression. This is however not always an advantage.
+  expression. It is up to the expression writer to decide what the desired outcome is.
 \end{description}
 \end{example}
 
@@ -188,24 +191,30 @@ expansions to regular expressions above, we can rewrite this as:
 
 Finite automatons are used to solve a wide array of problems. In this
 thesis we will focus on finite automatons as they are used with
-regular expressions. A finite state machine consists of a number of
-states and transitions between states. One state is marked as the
-initial state, a set of states is marked as final. To each transition
-there is attached a condition. Input is consumed in sequence, for each
-symbol transitions are taken when their attached condition are met. If
-the simulation ends in a final state, the finite automaton is said to
-accept the input.
+regular expressions. 
+A finite state machine consists of a number of
+states and transitions between states. It is constructed as follows:
+\begin{itemize}
+    \item One state is marked as the
+    initial state
+    \item a set of states, one or more, is marked as final
+    \item A condition is attached to each transition between states
+    \item Input is consumed in sequence and for each symbol transitions are taken when their attached condition are met
+    \item If the simulation ends in a final state, the finite automaton is said to accept the input
+\end{itemize}
 
 Finite automatons can be divided in two categories: The deterministic
 (DFA) and the non-deterministic (NFA) finite automaton. This
 distinction is mostly relevant in practice, as they are
-equivalent. NFAs and DFAs recognize exactly the regular languages.
+equivalent\todo{jan: in terms of what?}: NFAs and DFAs recognize exactly the regular languages.
+
+\todo[inline]{jan: What about "Nondeterministic finite automata with ε-transitions (FND-ε or ε-NFA)"}
 
 
 \begin{description}
 \item[NFA] For each pair of input symbol and state, there may be more
-  than next states. This means that there may be more than one path
-  through an NFA for an input string.
+  than next states. This means that there may be several paths
+  through an NFA for a given\todo{jan: an?} input string.
 
   The $\upvarepsilon$-transitions are an extension of the NFA. These
   are special transitions that can be taken without consuming any
@@ -216,17 +225,19 @@ equivalent. NFAs and DFAs recognize exactly the regular languages.
   one next state. This means there is only one path through the DFA
   for an input string.
 \end{description}
-
+\todo[inline]{jan: Aren't you forgetting the size growth of either? Also you're not talking about the properties of either, and their respective disadvantages}
 \input{parsing}
 
 \subsection{Summary}
 
 Regular expressions are a widely used and popular tool. The features
 offered and the semantics vary. For example some will offer
-backreferencing and others will not, some will offer a leftmost match
-in alternations others will offer a longest match. The underlying
-implementation and performance vary widely. A regular expression
-engine will solve some problems more efficiently than others.
+back referencing and others will not, some will offer a leftmost match
+in alternations, others will offer a longest match. Even for engines with similar feature sets, the underlying
+implementation and performance can vary widely. A regular expression
+engine can typically solve some types of problems more efficiently than others, or vice versa: it may be particularly bad at a given problem.\todo{Jan: changed}
+
+\todo[inline]{Might want to give an example}
 
 %% \todo[inline]{write something about how regular expressions can be
 %%   very powerful but the underlying design and its performance can vary
