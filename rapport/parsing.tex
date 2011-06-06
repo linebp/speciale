@@ -1,7 +1,7 @@
 \subsection{Regular expression to NFA}
 \label{sec:from_regular_expression_to_nfa}
 Every regular expressions can be converted to a NFA matching the same
-language. 
+language.  This section will describe an approach to doing so.
 
 \subsubsection{Thompson}
 \label{sec:re2nfa_thompson_theory}
@@ -77,10 +77,10 @@ options left empty.
 %% \end{figure}
 
 The first compound fragment is alternation, see figure
-\vref{fig:alternation}. The two subfragments R and S are automatons
+\vref{fig:alternation}. Here, the two sub-fragments R and S are automatons
 with initial states and some dangling edges. What else they are
-composed of, is of no consequence. One new state is added, this is
-made the initial state for this fragment. The initial state has two
+composed of, is irrelevant for the moment\todo{changed}. We add one new state, 
+and make it the initial state for this fragment. The initial state has two
 $\upvarepsilon$-edges leaving, connecting to the initial states of R
 and S. The dangling edges for the new fragment is the sum of the
 dangling edges leaving R and S.
@@ -218,23 +218,29 @@ state. We have the final result in figure \vref{fig:ex_parsing_finished}
 
 The NFAs constructed as described in section
 \vref{sec:from_regular_expression_to_nfa} can be used to match a
-regular expression with a string, i.e. to decide if a string belongs
+regular expression with a string, i.e. to determine if a string belongs
 to the language of the regular expression. 
 
-
 Once the NFA is generated, simulating it is a straightforward
-task. The method we will be using is attributed to Thompson
-\cite{Thompson1968}. We maintain a set of active states and a pointer
-to the current character in the string. At the beginning only the
-start state belongs to the set of active states. The string is read
-from left to right, taking each character in turn. When a character is
-read from the input string, all legal transitions from the states in
-the active set is followed. A transition is legal if it is a
-$\upvarepsilon$-transition or if the mark on the transition matches
-the character read from the input string. The new set of active states
-is the set of end states for the transitions followed. If the
-accepting state is included in the active set when the string is read,
-the string matches the regular expression.
+task. Again, our method is attributed to Thompson
+\cite{Thompson1968}. 
+\begin{enumerate}
+    \item We maintain a set of active states and a pointer
+    to the current character in the string
+    \item At the beginning only the
+    start state belongs to the set of active states
+    \item The string is read
+    from left to right, taking each character in turn. When a character is
+    read from the input string, all legal transitions from the states in
+    the active set is followed
+    \item A transition is legal if it is a
+    $\upvarepsilon$-transition or if the mark on the transition matches
+    the character read from the input string. The new set of active states
+    is the set of end states for the transitions followed
+    \item If the
+    accepting state is included in the active set when the string is read,
+    the string matches the regular expression
+\end{itemize}
 
 With this method we only ever add a state to the active set once per
 iteration and we only read each character from the input string once.
