@@ -1,14 +1,17 @@
 \section{Introduction}
-
-This masters thesis presents a design and an implementation of a
-regular expression engine with focus on memory consumption.
-
+\todo[inline]{Before this section, you should have a separate, uncounted, page thanking those that have helped you.}
 Regular expressions is an important tool for matching strings of
 text. In many text editors and programming languages they provide a
 concise and flexible way of searching and manipulating text. They find
 their use in areas like data mining, spam detection, deep packet
 inspection and in the analysis of protein sequences, see
 \cite{pedersen2010}.
+
+This masters thesis presents a design and an implementation of a
+regular expression engine with focus on memory consumption. Also 
+included is an evaluation of the work and a discussion about possible
+future extensions.
+
 
 
 \subsection{Motivation}
@@ -20,12 +23,18 @@ form, either as an embedded feature or as a stand alone
 library. There are many different flavors of regular expression and
 implementations, each adapted to some purpose. 
 
+
+\paragraph{Challenges and desired outcome}
 Many of the existing solutions gives no guarantees on their memory
 consumption. In this project we will focus on a streaming solution,
 that is we will, where possible, use a constant amount of memory for a
 fixed regular expression. We will build a general framework to this
 purpose.
 
+In addition, we wish to attempt to isolate each regular expression step \todo{finish with why}
+
+
+These improvements should be particular useful in situations where ...\todo{write something about where ;)}
 
 %% Regular expressions has seen much research. Det er brugt mange steder
 %% i erhvervslivet. Mange programmeringssprog tilbyder regulære udtryk,
@@ -87,9 +96,16 @@ optimizations that can be considered necessary in a full-fledged
 regular expression engine that are only peripherally considered
 here. In situations where we are faced with a choice, we have
 generally favored simplicity and robustness.
-
+¨
+In several cases, we only theoretically discuss alternative solutions and do not provide a prototype.\todo{Ok?}
 %% Fokus på at bevise ideen ikke et stort featuresæt, den kan ikke serach
 %% and replace
+
+\subsubsection{Implementation Choices}
+\todo[inline]{Mest filler så dette her kapitel ikke var så kort, men du manglede det vist}
+Some choices were made quite early in the planning phase. This includes choice of programming language, where C was chosen for two main reasons: it provided a good baseline comparison against other implementations (with a minimal library and memory overhead compared to many other languages) and while it was not necessary to reuse code\todo{er det sandt?}, we already had good experiences using C from earlier experiments with regular expressions. The obvious drawback to C is that it is often more time consuming to develop software due to the relative primitiveness of the language and library.
+
+Other choices that were made early was to build on the work of Henglein and Nielsen, especially for the mixed bit values concept. This will be treated in more detail later.
 
 \subsection{Summary of contributions}
 
