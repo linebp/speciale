@@ -206,15 +206,15 @@ states and transitions between states. It is constructed as follows:
 Finite automatons can be divided in two categories: The deterministic
 (DFA) and the non-deterministic (NFA) finite automaton. This
 distinction is mostly relevant in practice, as they are
-equivalent\todo{in terms of what?}: NFAs and DFAs recognize exactly the regular languages.
+equivalent\todo{jan: in terms of what?}: NFAs and DFAs recognize exactly the regular languages.
 
-\todo[inline]{What about "Nondeterministic finite automata with ε-transitions (FND-ε or ε-NFA)"}
+\todo[inline]{jan: What about "Nondeterministic finite automata with ε-transitions (FND-ε or ε-NFA)"}
 
 
 \begin{description}
 \item[NFA] For each pair of input symbol and state, there may be more
   than next states. This means that there may be several paths
-  through an NFA for a given\todo{an?} input string.
+  through an NFA for a given\todo{jan: an?} input string.
 
   The $\upvarepsilon$-transitions are an extension of the NFA. These
   are special transitions that can be taken without consuming any
@@ -225,7 +225,7 @@ equivalent\todo{in terms of what?}: NFAs and DFAs recognize exactly the regular 
   one next state. This means there is only one path through the DFA
   for an input string.
 \end{description}
-\todo[inline]{Aren't you forgetting the size growth of either? Also you're not talking about the properties of either, and their respective disadvantages}
+\todo[inline]{jan: Aren't you forgetting the size growth of either? Also you're not talking about the properties of either, and their respective disadvantages}
 \input{parsing}
 
 \subsection{Summary}
@@ -235,7 +235,7 @@ offered and the semantics vary. For example some will offer
 back referencing and others will not, some will offer a leftmost match
 in alternations, others will offer a longest match. Even for engines with similar feature sets, the underlying
 implementation and performance can vary widely. A regular expression
-engine can typically solve some types of problems more efficiently than others, or vice versa: it may be particularly bad at a given problem.\todo{changed}
+engine can typically solve some types of problems more efficiently than others, or vice versa: it may be particularly bad at a given problem.\todo{Jan: changed}
 
 \todo[inline]{Might want to give an example}
 
