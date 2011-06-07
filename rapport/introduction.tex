@@ -105,6 +105,8 @@ In several cases, we only theoretically discuss alternative solutions and do not
 \todo[inline]{jan: Mest filler så dette her kapitel ikke var så kort, men du manglede det vist}
 Some choices were made quite early in the planning phase. This includes choice of programming language, where C was chosen for two main reasons: it provided a good baseline comparison against other implementations (with a minimal library and memory overhead compared to many other languages) and while it was not necessary to reuse code\todo{jan: er det sandt?}, we already had good experiences using C from earlier experiments with regular expressions. The obvious drawback to C is that it is often more time consuming to develop software due to the relative primitiveness of the language and library.
 
+Similarly, we chose to develop the program on a POSIX (specifically Linux) platform for two reasons; first, it is the primary platform for many other regular expression libraries, which makes comparisons simpler, and lastly for practical purposes, it is a free and highly rich platform that the authors were already familiar with.
+
 Other choices that were made early was to build on the work of Henglein and Nielsen, especially for the mixed bit values concept. This will be treated in more detail later.
 
 \subsection{Summary of contributions}
