@@ -1,16 +1,19 @@
 \section{Optimizations}
-
 The program as described in section \vref{sec:implementation} is
 unoptimized and written for readability and simplicity. This section
-deals with potential and realized optimizations. Optimizing one aspect
-of performance can often hurt another aspect. See section
-\vref{sec:specs} for the specifications of the test computer. Programs
-were translated with \texttt{gcc} version 4.4.5 and the following flags:
-\texttt{-O3 -march=i686}.
+deals with potential and realized optimizations. In some cases it is necessary to make a choice: 
+optimizing one aspect (e.g. speed) can incur cost in another aspect (e.g. storage), or vice versa. 
+We must also differentiate between design, source code or even lower levels of optimizations. Design changes often involve changing the
+underlying algorithms, while changes at source code level will typically have a less drastic effect given a sufficient large problem size, but the impact on constant costs can be significant. This section will discuss both of these types of optimizations.\todo{jan: changed}
+
+Our binaries were translated with \texttt{gcc} version 4.4.5 and the following flags:
+\texttt{-O3 -march=i686}. See section
+\vref{sec:specs} for the specifications of the test computer.
 
 \subsection{Finding out where}
 \label{sec:finding_out_where}
-The first step in optimizing should be finding out where. To this
+It is often difficult to simply guess where we might gain potential performance benefits. We can have a theoretical analysis of the algorithms involved but these do not cover unexpected constant costs (an overly expensive system call performed per iteration in a loop for example), or potential errors in the implementation.
+Therefore, the first step in optimizing should be running an analysis on the implementation\todo{jan: changed}. To this
 purpose we have set up a few experiments to decide the memory usage
 and runtimes of the programs. In all the following experiments, the
 first program, \texttt{main}, in our pipe is called with a regular
@@ -55,10 +58,10 @@ The sizes of the output from the previous experiment on memory usage
 is plotted in figure \vref{tab:output_size}. We can see that there is
 a big size difference between input to \texttt{main} and output; the
 output is 9 times bigger than the input. The same goes for the output
-of \texttt{groupings\_all}, this is because there is nothing to be
+of \texttt{groupings\_all}. In this case, it is because there is nothing to be
 removed by this filter with this particular regular expression. The
 output of \texttt{trace} is 3 times bigger than the original string of
-text.
+text.\todo{jan: so this is worst case?}
 
 \ctable[
   caption = Sizes of output,
@@ -77,10 +80,10 @@ text.
 \subsubsection{Runtimes}
 We made a small experiment to decide the runtimes of each program. We
 used the Perl script in section \vref{sec:runtimes.pl} to measure
-runtimes. We used the regular expression \textsf{(.*)} and a logfile
+runtimes. We used the regular expression \textsf{(.*)} and a log file
 of suitable size as inputs. In table \vref{tab:runtimes} the runtimes
-for the different programs is seen. \lstinline{trace} takes more than
-5 hours to complete.
+for the different programs is seen. Note that run times with \lstinline{trace} takes more than
+5 hours to complete\todo{jan: is this because its being traced, or in general?}.
 
 \ctable[
   caption = Runtimes,
@@ -104,18 +107,18 @@ for the different programs is seen. \lstinline{trace} takes more than
 %% \end{figure}
 \subsubsection{Profiling}
 We need to analyze the runtime behavior of the programs, to see which
-functions takes up the runtime of the programs. This is what a profiler
-is for. There are many to chose from. We chose to use \texttt{gprof}
+functions takes up the runtime of the programs. For this purpose, we used a 
+external tool, a profiler, of which there are many to chose from. We chose to use \texttt{gprof}
 as it can give us an overview of which functions are called and how
 much time is spent in each.
 
 The programs was compiled and linked with the \texttt{-pg} option to
 enable profiling data to be collected for \texttt{gprof}. We need to
 extend the runtimes to get better results from \texttt{gprof}, so
-instead of the text from \url{lipsum.com} we used a logfile of
+instead of the text from \url{lipsum.com} we used a log file of
 suitable size. The size was chosen to be small enough to fit in
-memory, but big enough to produce longer runtimes. In section
-\vref{sec:profiling.pl} we have the perl script used for the
+memory, but big enough to produce longer runtimes. Section
+\vref{sec:profiling.pl} contains the perl script used for 
 profiling.
 
 In figures \ref{fig:main_unoptimized},
@@ -191,8 +194,7 @@ of the total runtime.
 
 \subsection{Applying the knowledge gained}
 
-In the previous section we identified a few troublespots, these are
-listed here. 
+In the previous section we identified a few trouble spots and we will discuss potential remedies in this section. 
 \begin{description}
 \item[IO] From the output of \texttt{gprof} we can see that a lot of
   our runtime, in most programs, is used in the two I/O functions
@@ -349,7 +351,7 @@ does state that these thread-unsafe functions probably should not be
 used. The results from an experiment similar to the previous, only
 using the non-thread-safe functions for IO, are in table
 \vref{tab:buffersize_unlocked}. The non-thread-safe functions are on
-average 0.16 seconds faster. 
+average 0.16\todo{jan: percentage would be better but this section is not that relevant} seconds faster. 
 
 \ctable[
   caption = Runtimes for different buffersizes using non-thread-safe functions,
