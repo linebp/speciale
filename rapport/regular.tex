@@ -1,11 +1,14 @@
 \section{Regular expressions and finite automatons}
-
+\label{sec:regular_finite}
 %% \todo[inline]{MAn bruger dem til at beskrive tekststrenge med bestemte
 %% mønstre, prøv at sætte noget lettere fordøjeligt ind før definitionerne}
 
 A regular language is a possibly infinite set of finite sequences of
-symbols from a finite alphabet.  It is essentially a formal language that must fulfill a number
-of properties. \todo{wikipedia havde noget interessant at sige men vi kan ikke bare kopiere det ind :(}
+symbols from a finite alphabet. It is a formal language that must
+fulfill a number of properties.
+
+%\todo{wikipedia havde noget interessant at sige men vi kan ikke bare
+%  kopiere det ind :(}
 
 We provide this formal definition of regular languages:
 \begin{definition}[Regular language]
@@ -162,9 +165,9 @@ a quoting symbol, a wild card and non-capturing parenthesis.
   \item A more intuitive notation could be using single parenthesis
     for non-capturing, $(r)$, and double parenthesis for capturing,
     $((r))$.
-  \item A currently unused option is $\{r\}$ as special notation, which would
-  be simple to implement. This
-    is however the industry standard for repetition notation\todo{changed}.
+  \item A currently unused option is $\{r\}$ as special notation,
+    which would be simple to implement. This is however the industry
+    standard for repetition notation\todo{changed}.
   \end{itemize}
   
   Since there is a standard, we will adhere to it, and use $(?:r)$ for
@@ -205,16 +208,18 @@ states and transitions between states. It is constructed as follows:
 
 Finite automatons can be divided in two categories: The deterministic
 (DFA) and the non-deterministic (NFA) finite automaton. This
-distinction is mostly relevant in practice, as they are
-equivalent\todo{jan: in terms of what?}: NFAs and DFAs recognize exactly the regular languages.
+distinction is mostly relevant in practice, as they are equivalent in
+terms of computing power. NFAs and DFAs recognize exactly the regular
+languages.
 
-\todo[inline]{jan: What about "Nondeterministic finite automata with ε-transitions (FND-ε or ε-NFA)"}
+\todo[inline]{jan: What about "Nondeterministic finite automata with
+  epsilon-transitions (FND-epsilon or epsilon-NFA)"}
 
 
 \begin{description}
 \item[NFA] For each pair of input symbol and state, there may be more
-  than next states. This means that there may be several paths
-  through an NFA for a given\todo{jan: an?} input string.
+  next states. This means that there may be several paths through an
+  NFA for a given\todo{jan: an?} input string.
 
   The $\upvarepsilon$-transitions are an extension of the NFA. These
   are special transitions that can be taken without consuming any
@@ -223,21 +228,45 @@ equivalent\todo{jan: in terms of what?}: NFAs and DFAs recognize exactly the reg
 
 \item[DFA] For each pair of input symbol and state, there may be only
   one next state. This means there is only one path through the DFA
-  for an input string.
+  for a given input string.
 \end{description}
-\todo[inline]{jan: Aren't you forgetting the size growth of either? Also you're not talking about the properties of either, and their respective disadvantages}
+
+The advantage of a NFA is the size, the number of states and
+transitions in a NFA is linear in the size of the regular expression,
+whereas a DFA will in the worst case have a number of states
+exponential in the size of the regular expression. The advantage of a
+DFA is the effort required to simulate it. It only requires time
+linear in the size of the input string and constant space (not
+counting the space for the DFA), whereas the NFA requires time linear
+in the product of the size of the regular expression and input string
+and space linear in the size of the regular expression.
+
+\todo[inline]{jan: Aren't you forgetting the size growth of either?
+  Also you're not talking about the properties of either, and their
+  respective disadvantages}
+
+
 \input{parsing}
 
 \subsection{Summary}
 
 Regular expressions are a widely used and popular tool. The features
-offered and the semantics vary. For example some will offer
-back referencing and others will not, some will offer a leftmost match
-in alternations, others will offer a longest match. Even for engines with similar feature sets, the underlying
-implementation and performance can vary widely. A regular expression
-engine can typically solve some types of problems more efficiently than others, or vice versa: it may be particularly bad at a given problem.\todo{Jan: changed}
+offered and the semantics vary. For example some will offer back
+referencing and others will not, some will offer a leftmost match in
+alternations, others will offer a longest match. Even for engines with
+similar feature sets, the underlying implementation and performance
+can vary widely. A regular expression engine can typically solve some
+types of problems more efficiently than others, or vice versa: it may
+be particularly bad at a given problem. %\todo{Jan: changed}
 
-\todo[inline]{Might want to give an example}
+There are many highly specialized regular expression engines
+exemplifying this. To briefly mention an example: Structured text like
+SGML documents benefits from a different approach. Many times you will
+need to find the text between two tags, but many tools are not geared
+for this kind of search: The search can span several lines and we will
+usually want a shortest match. See \cite{pedersen2010} for details.
+
+%\todo[inline]{Might want to give an example}
 
 %% \todo[inline]{write something about how regular expressions can be
 %%   very powerful but the underlying design and its performance can vary

@@ -1,13 +1,315 @@
 \section{Analysis of algorithms}
+\label{sec:theoretical}
+In this section we analyze the complexity of the various programs and
+filters. We will not present pseudo code for the functions, it was not
+within the capabilities of the authors to boil down 500+ lines of
+C-code to half a page worth of orderly pseudo code. Instead we present
+tables of functions, with a short description of what it does and what
+other functions it calls and whether or not this is done in a
+loop. Most importantly we will include the complexity of each function
+in the tables. 
+
+In the following sections $n$ denotes the length of the regular
+expression and $m$ is the length of the input string.
 
 \subsection{Constructing the NFA}
 
+In tables \ref{tab:re2nfa1}, \ref{tab:re2nfa2} and \ref{tab:re2nfa3}
+we have a overview of the functions involved in constructing a NFA. We
+have the theoretical upper bound on run time and memory consumption in
+big-o notation. Most functions are straightforward but a few deserve a
+comment. 
 
-\begin{codebox}
-  \Procname{$\proc{re2nfa}(regex)$}
-  \li \For $c \gets regex[0...end]$
-  \li \Do
-  \li    \kw{switch}$(c)$
-  \li    \kw{end}
-  \li \End
-\end{codebox}
+\lstinline{ptrlist_patch} is the function that patches a list of
+dangling pointers to a state. The pointers are only dangling once in
+their lifetime, they do not become dangling again once they are
+patched to a state. The upper bound on the total number of dangling
+pointers is two times the number of states and the state count is
+linear in the size of the regular expression, making the upper bound
+on the number of pointers linear in the size of the regular expression
+also. The total amount of work is linear in the size of the regular
+expression. The number of times the \lstinline{ptrlist_patch} function
+is called is linear in the size of the regular expression. The
+amortized cost of calling the \lstinline{ptrlist_patch} function is
+therefore O(1).
+
+\lstinline{ptrlist_free}, see argument for \lstinline{ptrlist_patch}.
+
+\lstinline{cc2fragment} also has a loop over the regular
+expression. The reason why this does not become a O($n^2$) operation is
+that the loop counter is shared between the two functions. Any
+progress made by one function in the regular expression is shared with
+the other.
+
+We note that all functions called by the main loop function
+\lstinline{re2nfa} are O(1) both in run time and memory, apart from
+\lstinline{cc2fragment} see above comment. \lstinline{re2nfa}
+allocates a stack for use in the construction process, the number of
+elements in the stack is the number of characters in the regular
+expression. We call the functions a number of times that are linear in
+the size of the regular expression, we therefore conclude that
+constructing a NFA is O($n$) in both run time and O($n$) in memory
+consumption.
+
+\ctable[
+  caption = Analysis of \texttt{re2nfa} (part 1),
+  label = tab:re2nfa1
+]
+{lp{5cm}cc}
+{
+  \tnote[a]{Amortized cost}
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{state} & Allocates memory for states & O(1) & O(1) \NN
+  \lstinline{fragment} & Assigns values for a fragment & O(1) & O(1) \NN
+  \lstinline{ptrlist_list1} & Allocates pointer list of one & O(1) &
+  O(1) \NN
+  \lstinline{ptrlist_patch} & Patches list of pointers & O(1)\tmark[a] & O(1)
+  \NN
+  \lstinline{ptrlist_append} & Appends two lists of pointers & O(1) &
+  O(1) \NN
+  \lstinline{ptrlist_free} & Frees list of pointers  &  O(1)\tmark[a]
+  & O(1) \NN
+  \lstinline{read_paren_type} & Determines parenthesis type & O(1) &
+  O(1) \NN
+  \lstinline{range} & Allocates memory for a range & O(1) & O(1) \NN
+  \lstinline{parse_cc_char} & Parses a character in a character class
+  & O(1) & O(1) \LL
+}
+
+\ctable[
+  caption = Analysis of \texttt{re2nfa} (part 2),
+  label = tab:re2nfa2
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{cc2fragment} & Makes a fragment of a character
+  class. Calls \lstinline{state} and \lstinline{fragment} sequentially
+  and \lstinline{parse_cc_range} in a loop over the regular expression
+  & O(n) & O(1) \NN
+  \lstinline{parse_cc_range} & Parses a range in a character
+  class. Calls \lstinline{range} and \lstinline{parse_cc_char}
+  sequentially  & O(1) & O(1) \NN
+  \lstinline{maybe_concat} & Concatenates top two fragments. Calls
+  \lstinline{ptrlist_patch} and \lstinline{ptrlist_free}
+  sequentially & O(1) & O(1) \NN
+  \lstinline{maybe_alternate} & Alternates top fragments. Calls
+  \lstinline{state}, \lstinline{fragment}, \lstinline{ptrlist_list1} and
+  \lstinline{ptrlist_append} sequentially & O(1) & O(1) \NN
+  \lstinline{do_right_paren} & Does a right parenthesis. Calls
+  \lstinline{maybe_concat}, \lstinline{maybe_alternate},
+  \lstinline{state}, \lstinline{fragment} and
+  \lstinline{ptrlist_list1} sequentially & O(1) & O(1) \NN
+  \lstinline{finish_up_regex} & Finishing touches on forming the
+  NFA. Calls \lstinline{state}, \lstinline{maybe_concat},
+  \lstinline{maybe_alternate}, \lstinline{ptrlist_append},
+  \lstinline{ptrlist_list1}, \lstinline{ptrlist_patch} and
+  \lstinline{ptrlist_free} sequentially & O(1) & O(1) \NN
+  \lstinline{do_quantifier} & Does quantifier. Calls
+  \lstinline{state}, \lstinline{ptrlist_patch}, \lstinline{fragment},
+  \lstinline{ptrlist_list1}, \lstinline{ptrlist_append}
+  sequentially. & O(1) & O(1) \LL
+}
+
+\ctable[
+  caption = Analysis of \texttt{re2nfa} (part 3),
+  label = tab:re2nfa3
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{re2nfa} & Main loop. Calls \lstinline{state}, \lstinline{do_quantifier},
+  \lstinline{maybe_concat}, \lstinline{maybe_alternate},
+  \lstinline{fragment}, \lstinline{do_right_paren},
+  \lstinline{cc2fragment} looping over the regular expression and
+  \lstinline{finish_up_regex} sequentially & O(n) & O(n)
+  \LL
+}
+
+\subsection{Simulating the NFA}
+
+In table \ref{tab:match} we have the overview of functions involved in
+the simulation of the NFA. We have the theoretical upper bound on run
+time and memory consumption in big-O notation. Some functions deserve
+a comment.
+
+\lstinline{addstate} and \lstinline{last_addstate} marks states they
+already have visited in one step. Upon encountering a state it already
+has visited, it returns. This means that the total amount of work in a
+single \lstinline{step} is O($n$) and not O($n^2$).
+
+\lstinline{is_in_range} is also called once per active state in
+\lstinline{step} and \lstinline{last_step}. We only create one state
+per character class, what we do instead is create a list of ranges
+representing the character class. The more ranges the fewer states and
+vice versa. This (again) means that the total amount of work in a
+single \lstinline{step} is O($n$) and not O($n^2$).
+
+We note that for each character in the input string, in the worst case
+we have to visit all states: O($n*m$). We allocate space enough for
+the NFA which is O($n$) and two lists to keep track of the active
+states which is also O($n$), resulting in a total of O($n$).
+
+\ctable[
+  caption = Analysis of \texttt{match},
+  label = tab:match
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{is_in_range} & Determines if a character is accepted by a
+  character class & O($n$) & O(1) \NN
+  \lstinline{read_bit} & Reads character from input & O(1) & O(1) \NN
+  \lstinline{write_bit} & Outputs bit & O(1) & O(1) \NN
+  \lstinline{last_addstate} &  Add a state with final character in
+  input string. Calls \lstinline{write_bit}
+  \lstinline{last_addstate} & O($n$) & O(1) \NN 
+  \lstinline{last_step} & Advance simulation final character. Calls
+  \lstinline{last_addstate}, \lstinline{is_in_range} and \lstinline{write_bit} in a loop over
+  active states & O($n$) & O(1) \NN
+  \lstinline{addstate} & Add a state. Calls \lstinline{write_bit} and
+  \lstinline{addstate} & O($n$) & O(1) \NN
+  \lstinline{step} & Advances simulation one character. Calls
+  \lstinline{addstate} and \lstinline{write_bit} in a loop over 
+  active states & O($n$) & O($n$) \NN
+  \lstinline{match} & Matches a NFA with a string & O($m*n$) & O($n$)
+  \NN
+  \LL
+}
+
+\subsection{The 'match' filter}
+
+We see no reason for a table of functions for this filter, we only
+call \lstinline{write_bit} and \lstinline{read_bit} once per input
+character. This results in a run time linear in the input length and a
+memory consumption of O(1).
+
+\subsection{The 'groupings' filter} 
+
+In table \ref{tab:groupings} we have the overview of the functions in
+the 'groupings' filter, $o$ is the input length. 
+
+\lstinline{follow_epsilon} follows all possible transitions for a
+channel. The number of possible transitions is bounded the number of
+actual transitions O($n$). No loops are entered, since these requires
+a character from input. It is called virtually once for every input
+character. This leads us to overall complexity for this filter:
+O($n*o$). The memory used is the memory for the NFA and the list of
+active channels, we cannot have more active channels than states:
+O($n$).
+
+\ctable[
+  caption = Analysis of the 'groupings' filter,
+  label = tab:groupings
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{channel} & Allocates memory for channel & O(1) & O(1) \NN
+  \lstinline{channel_copy} & Copies a channel & O(1) & O(1) \NN
+  \lstinline{channel_free} & Frees a channel & O(1) & O(1) \NN
+  \lstinline{channel_remove} & Removes a channel from the channel
+  list. Calls \lstinline{channel_free}
+  & O(1) & O(1) \NN
+  \lstinline{follow_epsilon} & Follow all possible transitions from
+  current state. Calls \lstinline{write_bit} &
+  O($n$) & O(1) \NN
+  \lstinline{do_end} & Channel has ended. Calls
+  \lstinline{channel_remove} and \lstinline{write_bit} & O(1) & O(1) \NN
+  \lstinline{do_split} & Splits the channel. Calls
+  \lstinline{channel_copy} & O(1) & O(1) \NN
+  \lstinline{do_one} & Channel takes the transition marked 1. Calls
+  \lstinline{write_bit} and \lstinline{follow_epsilon} & O($n$) & O(1) \NN
+  \lstinline{do_zero} & Channel takes the transition marked 0. Calls
+  \lstinline{write_bit} and \lstinline{follow_epsilon} & O($n$) & O(1) \NN
+  \lstinline{do_escape} & Handles escaped character in input. Call
+  \lstinline{follow_epsilon} and \lstinline{write_bit} & O($n$) & O(1)
+  \NN
+  \lstinline{read_mbv} & Main loop. Calls \lstinline{read_bit},
+  \lstinline{write_bit}, \lstinline{do_split}, \lstinline{do_end},
+  \lstinline{do_zero}, \lstinline{do_one}, \lstinline{do_escape} in a loop over the input and
+  \lstinline{follow_epsilon} & O($n*o$) & O($n$) \NN
+  \lstinline{main} & Calls \lstinline{re2nfa} and \lstinline{read_mbv}
+  & O($n*o$) & O($n$)
+  \LL
+}
+
+
+\subsection{The 'trace' filter} 
+
+In table \ref{tab:trace} we have the overview of the functions in the
+trace' filter, $o$ is the input length. The version of the 'trace'
+filter analyzed here, is the optimized one.
+
+\lstinline{channel_write_bit} reallocates memory when it runs out, the
+allocation strategy is to double the amount of memory every time we
+run out. The complexity of copying the data over all calls to
+\lstinline{channel_write_bit} is 1 + 2 + 4 + 8 + ... $o$ =
+O($o$). Because this is the cost of all calls to
+\lstinline{channel_write_bit}, the cost of \lstinline{trace} is only
+O($o$) and not O($o^2$).
+
+This filter is O($o$) complexity both in run time and memory. 
+
+\ctable[
+  caption = Analysis of the 'trace' filter,
+  label = tab:trace
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{channel_write_bit} & Writes bit in channel. Reallocates
+  memory if necessary & O($o$) & O($o$) \NN
+  \lstinline{trace} & Reads mixed bit-values backwards and stores the
+  channel containing a match. Calls \lstinline{channel_write_bit} in a
+  loop over the mixed bit-values & O($o$) & O($o$) \NN
+  \lstinline{read_mbv} & Reads whole input string into memory,
+  reallocates memory if it runs out. Calls
+  \lstinline{read_bit} in a loop over input & O($o$) & O($o$) \NN
+  \lstinline{reverse} & Reverses input string & O($o$) & O($o$) \NN
+  \lstinline{main} & Calls \lstinline{read_mbv}, \lstinline{reverse},
+  \lstinline{trace} and \lstinline{write_bit} & O($o$) & O($o$) \NN
+  \LL
+}
+
+
+\subsection{The 'serialize' filter}
+
+In table \ref{tab:serialize} we have the functions in the 'serialize'
+filter. $o$ is the input length. 
+
+This is not a complicated filter. We basically just read input and
+step through the NFA: O($o*n$). The only memory we allocate is for the
+NFA: O($n$).
+
+
+\ctable[
+  caption = Analysis of the 'serialize filter,
+  label = tab:serialize
+]
+{lp{5cm}cc}
+{
+}
+{\FL
+  Function & Description & Run time & Memory \ML
+  \lstinline{follow} & Follows all legal transitions. Calls \lstinline{write_bit} & O($n$) & O(1)
+  \NN
+  \lstinline{read_bv} & Reads bit-values from input. Calls
+  \lstinline{read_bit}, \lstinline{write_bit} and \lstinline{follow} in a loop over input &
+  O($o*n$) & O(1) \NN
+  \lstinline{main} & Calls \lstinline{re2nfa} and \lstinline{read_bv}
+  & O($o*n$) & O($n$) 
+  \LL
+}

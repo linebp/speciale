@@ -1,5 +1,6 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[11pt, english, a4paper]{article}
 \pdfminorversion 5
+\usepackage{babel}
 \usepackage{varioref}
 \usepackage[utf8]{inputenc}
 % fancyheadings: Fancy headers
@@ -190,8 +191,18 @@ qed=\ensuremath{\ast}
 %\theoremlisttype{all}
 %\listtheorems{Example}
 \clearpage
-\setcounter{page}{1}
-\pagenumbering{arabic}
+We would like to thank all those that have been involved in this great
+adventure. A few people deserve a special mentioning:\\ \\
+First of all we would like to thank Fritz Henglein and Lasse Nielsen
+who have been thesis advisers on this project.\\ \\
+Jan Lykke Wiberg deserve a mentioning for hes tireless support and
+proofreading.\\  \\
+We would also like to thank Carl Christoffer Hall-Frederiksen for
+general support and believing in us and for sending links to pictures
+of puppies.  
+\clearpage
+
+\setcounter{page}{1} \pagenumbering{arabic}
 \input{introduction}
 %\cite{Cox2007}
 \clearpage
@@ -201,9 +212,9 @@ qed=\ensuremath{\ast}
 \clearpage
 \input{implementation}
 \clearpage
-\input{theoretical}
-\clearpage
 \input{optimizations}
+\clearpage
+\input{theoretical}
 \clearpage
 \input{benchmarks}
 \clearpage
