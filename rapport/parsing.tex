@@ -77,12 +77,12 @@ options left empty.
 %% \end{figure}
 
 The first compound fragment is alternation, see figure
-\vref{fig:alternation}. Here, the two sub-fragments R and S are automatons
-with initial states and some dangling edges. What else they are
-composed of, is irrelevant for the moment\todo{changed}. We add one new state, 
-and make it the initial state for this fragment. The initial state has two
-$\upvarepsilon$-edges leaving, connecting to the initial states of R
-and S. The dangling edges for the new fragment is the sum of the
+\vref{fig:alternation}. Here, the two sub-fragments R and S are
+automatons with initial states and some dangling edges. What else they
+are composed of, is irrelevant for the moment. We add one new state,
+and make it the initial state for this fragment. The initial state has
+two $\upvarepsilon$-edges leaving, connecting to the initial states of
+R and S. The dangling edges for the new fragment is the sum of the
 dangling edges leaving R and S.
 
 \begin{figure}
@@ -128,7 +128,8 @@ properties:
   \item There are no edges leaving the accepting state
   \item There are no edges leading into the starting state
 \end{itemize}
-
+These properties are the reasons why we choose to use NFAs and this
+specific method of generating them.
 
 \begin{example}[Converting a regular expression to a NFA]
 \label{ex:converting_a_regular_expression_to_a_nfa}

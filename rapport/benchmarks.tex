@@ -85,23 +85,23 @@ the matching one, since it matches greedily.
 In figure \vref{fig:backtrackingworstcase_maintclre2_normal} we do not
 see much difference in the performance of Main, RE2 and Tcl. RE2 stops
 before the others, it has a upper limit on how much memory it will
-consume. The limit is user (compile time) defined for RE2\todo{jan: changed}. This limit could have been set to a value that would allow
-RE2 to continue matching with Main and Tcl. We chose not to do this,
-because we wanted to demonstrate this feature in RE2. This feature is
-especially useful in setups where memory is very tight or you accept
-regular expressions from untrusted sources, but can obviously also be considered a
+consume. The limit is user (compile time) defined for RE2. This limit
+could have been set to a value that would allow RE2 to continue
+matching with Main and Tcl. We chose not to do this, because we wanted
+to demonstrate this feature in RE2. This feature is especially useful
+in setups where memory is very tight or you accept regular expressions
+from untrusted sources, but can obviously also be considered a
 nuisance in other situations where you do not want to fiddle with this
 limit, but just want to make RE2 do your matches.
 
-As a side note, we found that if we added a \textsf{b}\todo{jan: does what?} at the end of
-the regular expression we would suddenly see marked improvements in
-the runtimes of Perl. Using a backtracking algorithm it would still
+As a side note, we found that if we added a literal \textsf{b} at the
+end of the regular expression, so that the regular expression no
+longer matches the string, we would suddenly see marked improvements
+in the runtimes of Perl. Using a backtracking algorithm it would still
 take time exponential in $n$ to decide they did not match, but Perl
 scans the input string for all literals in the regular expressions,
 and it quickly discovers that there is no \textsl{b} in the input
-string, so therefore the regular expression can not match the
-string. 
-
+string, so therefore the regular expression can not match the string.
 
 \subsubsection{Memory usage}
 
@@ -137,8 +137,8 @@ good use.
 
 Figure \vref{fig:backtrackingworstcase_mem_perl_log} shows Perls
 memory usage. It is hard to say anything useful based on that graph,
-the values for $n$ are too small. Unfortunately, due to the exponential run-time\todo{jan: changed from nature} of
-the problem it is not viable to increase them.
+the values for $n$ are too small. Unfortunately, due to the
+exponential run-time of the problem it is not viable to increase them.
 
 \subsection{A DFA worst-case}
 
@@ -223,7 +223,7 @@ switch method.
 Perls memory usage is mapped in figure
 \vref{fig:dfaworstcase_mem_perl}. Compared to our programs Perl uses
 rather a lot of memory. It seems to be increasing in a quadratic
-manner.\todo{investigate further}
+manner.%\todo{investigate further}
 
 In figure \vref{fig:dfaworstcase_mem_tcl_log} we have Tcls memory
 usage mapped. Note the logarithmic scale. Our suspicion that Tcl uses

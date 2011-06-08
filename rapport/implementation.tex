@@ -238,20 +238,30 @@ states.
 We had to adjust the basic implementation to our needs; we need to
 generate mixed bit-values. 
 
+We implemented the standard Thompson algorithm for simulating a
+NFA. It is important to note that this will throw away matches because
+we only once add a state to the active set. There are however at least
+two good reasons why you should not add a state more than once:
+\begin{itemize}
+\item Unless you are careful this will give rise to infinite loops in
+  the simulation process. More on this below.
+\item We open up for an exponential worst-case behavior. A good
+  example is the same as the backtracking engine worst-case
+  \textsf{a?$^n$a$^n$} matched with \textsl{a$^n$}. 
+\end{itemize}
 
-We have implemented the standard Thompson simulation algorithm, but it
-is possibly to report all matches, you just need to allow a state to
-be added more than once to the active set. This will give rise to
-infinite loops when matching regular expressions like \textsf{()*},
-see figure \vref{fig:inf_loop_simple} for the NFA. The simulator will
-go into a infinite loop generating these bit-values:
+The problems with the infinite loops arise when matching with regular
+expressions like \textsf{()*}, see figure \vref{fig:inf_loop_simple}
+for the NFA. The simulator will go into a infinite loop generating
+these bit-values:
 \begin{verbatim}
   =0=0=0=0=0=0=0=0=0=0=0=0=0=0=0=0=0=0=0...
 \end{verbatim}
 This is because there is a cycle of $\upvarepsilon$-transitions in the
-NFA. \todo{cut out all this DFS stuff?} This would not be desirable
-behavior and we would need to stop the simulation before it goes into
-an infinite loop.
+NFA. This would not be desirable behavior and we would need to stop
+the simulation before it goes into an infinite loop. Note that this is
+not implemented, as the problems with the infinite loops are not
+applicable in a standard Thompson simulation.
 
 \begin{figure}
   \centering \subfigure[\textsf{()*}]{
@@ -319,7 +329,7 @@ with extra $\upvarepsilon$-transitions. The extra transitions will be
 used to mark the beginning and end of a capturing parenthesis. We will
 use the mixed bit-values to navigate the NFA, whenever we are inside a
 capturing parenthesis we will copy the mixed bit-values to output. 
-\todo[inline]{Add example of the extra epsilon-edges}
+%\todo[inline]{Add example of the extra epsilon-edges}
 
 We rewrote the regular expression to allow for capturing under
 alternation. We will need to insert a \texttt{1} when a group
@@ -331,7 +341,7 @@ arm. Again we solve this problem by augmenting the NFA. We insert the
 extra information in the split-state marking the entrance to an
 alternation and add an extra state at the end of the upper arm.
 
-\todo[inline]{Add example of the extra node and information}
+%\todo[inline]{Add example of the extra node and information}
 
 We adopt a similar strategy to solve the problem of reporting only the
 first match in capturing under a quantifier. We will again augment the
@@ -341,7 +351,7 @@ iteration of the quantifier. When we pass this state and do another
 iteration we will know that we have already been there at least once
 and should not output any more bit-values.
 
-\todo[inline]{Add example of star iteration count thingy}
+%\todo[inline]{Add example of star iteration count thingy}
 
 
 We could also have solved the problem of keeping track of how many
@@ -400,7 +410,7 @@ point. When the chunk of memory becomes to small, we will enlarge to a
 chunk twice the size. When we reach the end of the input stream, we
 will know if there is a match and be able to output the bit-values
 that make up the match.
-\todo[inline]{jan:savner en forklaring på hvad trace laver...står det andetsteds?}
+%\todo[inline]{jan:savner en forklaring på hvad trace laver...står det andetsteds?}
 
 \subsubsection{Serialize}
   

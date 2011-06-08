@@ -167,7 +167,7 @@ a quoting symbol, a wild card and non-capturing parenthesis.
     $((r))$.
   \item A currently unused option is $\{r\}$ as special notation,
     which would be simple to implement. This is however the industry
-    standard for repetition notation\todo{changed}.
+    standard for repetition notation.
   \end{itemize}
   
   Since there is a standard, we will adhere to it, and use $(?:r)$ for
@@ -206,20 +206,20 @@ states and transitions between states. It is constructed as follows:
     \item If the simulation ends in a final state, the finite automaton is said to accept the input
 \end{itemize}
 
-Finite automatons can be divided in two categories: The deterministic
-(DFA) and the non-deterministic (NFA) finite automaton. This
-distinction is mostly relevant in practice, as they are equivalent in
-terms of computing power. NFAs and DFAs recognize exactly the regular
-languages.
+Finite automatons can be divided in two main categories: The
+deterministic (DFA) and the non-deterministic (NFA) finite
+automaton. This distinction is mostly relevant in practice, as they
+are equivalent in terms of computing power. NFAs and DFAs recognize
+exactly the regular languages.
 
-\todo[inline]{jan: What about "Nondeterministic finite automata with
-  epsilon-transitions (FND-epsilon or epsilon-NFA)"}
+%% \todo[inline]{jan: What about "Nondeterministic finite automata with
+%%   epsilon-transitions (FND-epsilon or epsilon-NFA)"}
 
 
 \begin{description}
 \item[NFA] For each pair of input symbol and state, there may be more
   next states. This means that there may be several paths through an
-  NFA for a given\todo{jan: an?} input string.
+  NFA for a given input string.
 
   The $\upvarepsilon$-transitions are an extension of the NFA. These
   are special transitions that can be taken without consuming any
@@ -241,9 +241,9 @@ counting the space for the DFA), whereas the NFA requires time linear
 in the product of the size of the regular expression and input string
 and space linear in the size of the regular expression.
 
-\todo[inline]{jan: Aren't you forgetting the size growth of either?
-  Also you're not talking about the properties of either, and their
-  respective disadvantages}
+%% \todo[inline]{jan: Aren't you forgetting the size growth of either?
+%%   Also you're not talking about the properties of either, and their
+%%   respective disadvantages}
 
 
 \input{parsing}

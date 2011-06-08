@@ -1,3 +1,20 @@
 \section{Conclusion}
 \label{sec:conclusion}
-\todo[inline]{Missing}
+
+In this thesis we have demonstrated a prototype of our design and
+compared it to existing implementations of regular expression
+engines. We have seen how our design is viable, both in terms of
+run-time and memory consumption, both have good asymptotic bounds in
+theory and in practice. The weak point in the design is the size of
+the mixed bit-values output. This size determines the run-time and in
+one case the memory consumption of the filters. We have only observed
+a linear relationship between the size of the input string and the
+size of the mixed bit-values, though it could in theory be as big as
+the product of the sizes of the input string and the regular
+expression.
+
+Using the main program with the 'trace' filter we can also (in some
+cases) use our framework for compression and the 'serialize' filter
+for decompression. The idea is that, if you have a regular expression
+matching a string, the resulting bit-values will take up less space
+than the string itself. 
