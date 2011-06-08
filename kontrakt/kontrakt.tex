@@ -1,0 +1,281 @@
+
+\documentclass[10pt, a4paper]{article}
+% babel: Hyphenation patterns and language specific strings
+%\usepackage{babel} 
+% isolatin1: Danish character set
+%\usepackage{isolatin1}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+% varioref: Smart references
+\usepackage{varioref}
+% fancyheadings: Fancy headers
+\usepackage{fancyhdr}
+% avantgar, chancery, charter, courier, helvetic, newcent, pandora,
+% palatino, times, utopia, zapfchan: Fonte
+% euler: Math font
+\usepackage{euler}
+\usepackage{palatino}
+%\usepackage{newcent}
+% listings: For listing code with syntax highlighting
+\usepackage{listings}
+% graphicx: Include graphic-files
+\usepackage{graphicx}
+% amsmath: more mathcommands
+\usepackage{amsmath}
+% a4wide: for longer lines
+\usepackage{a4wide}
+% Package for infix arithmetic notation
+\usepackage{calc}
+% Defines if/then/else macros for conditional text
+\usepackage{ifthen}
+% Place selected parts of a document in landscape
+\usepackage{verbatim}
+\usepackage{url}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{rotating}
+
+%\usepackage{bibmods}
+%\usepackage{showtags}
+
+%------------------------------------------------------------
+% Set up listings environment
+% /usr/local/stow/share/texmf/doc/latex/styles/listings.dvi
+%------------------------------------------------------------
+%\lstloadlanguages{}
+\makeatletter
+\lstset{
+  language=C,
+  columns=fullflexible,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  showstringspaces=f,
+  breaklines=true,
+  keepspaces=true
+}
+\lstset{
+  numbers=left, 
+  numberstyle=\tiny, 
+  stepnumber=2, 
+  numbersep=5pt, 
+}
+\makeatother
+
+%------------------------------------------------------------
+% Set up headers and footers
+%------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhead{}
+% Put pagenumber centered on bottom of page
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+% Put section number and name on top left of page
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{}}
+\lhead{\fancyplain{}{\leftmark}}
+% Make sure the rest is blank
+\chead{}\rhead{}
+
+
+%% %------------------------------------------------------------
+%% % My own titlepagedefinition
+%% %------------------------------------------------------------
+%% \makeatletter
+%% \renewcommand{\maketitle}{
+%%   \begin{titlepage} 
+%%  \let\footnotesize\small
+%%     \let\footnoterule\relax
+%%     \parindent \z@
+%%     \reset@font
+%%     \null
+%%     \vskip 50\p@
+%%     \begin{center}
+%%       \hrule height 1pt
+%%       \vskip 1pt 
+%%       \hrule
+%%       \vskip 3pt
+%%       {\huge \bf \strut \@title \strut}\par
+%%       \vskip 1pt
+%%       \hrule
+%%       \vskip 1pt
+%%       \hrule height 1pt
+%%     \end{center}
+%%     \vskip 50\p@
+%%     \begin{flushright}
+%%       \Large \@author \par
+%%       \vskip 50\p@
+%%       \sl \@date
+%%     \end{flushright}
+%%     \vfil
+%%     \null
+%%   \end{titlepage}
+%% }
+%% \makeatother
+
+
+%------------------------------------------------------------
+% My own lists
+%------------------------------------------------------------
+\newlength{\Mylen}
+\newcommand{\entrylabel}[1]{%
+  \settowidth{\Mylen}{#1}%
+  \ifthenelse{\lengthtest{\Mylen > \labelwidth}}%
+  {\parbox[b]{\labelwidth}%
+    {\makebox[0pt][l]{#1}\\}}%
+  {#1}%
+  \hfil\relax}
+\newenvironment{entry}
+{\begin{list}{}%
+    {\renewcommand{\makelabel}{\entrylabel}%
+      \setlength{\labelwidth}{35pt}%
+      \setlength{\leftmargin}{\labelwidth+\labelsep}%
+    }%
+  }%
+{\end{list}}
+
+\title{Regular expression libraries and tools and applications}
+\author{Line Bie Pedersen 300976}
+%\date{}
+
+\begin{document}
+\begin{entry}
+\item[\bf{Project title:}] A streaming full regular expression parser
+\item[\bf{Author:}] Line Bie Pedersen (300976)
+\item[\bf{Project consultants:}] Fritz Henglein and Lasse Nielsen
+\item[\bf{Type:}] Master's Thesis, 30 ECTS
+\end{entry}
+
+\section*{Background}
+
+%% omstrukturer. det er for løst
+%% hvad er problemet i det oprindelige arbejde, hvad er det vi løser
+
+In 2000 Dub\'{e} and Feeley \cite{Dube2000} published an article on
+how to efficiently build a parse tree from a regular expression. To do
+this they add output to the edges of the NFA. The problem with the
+method described by Dub\'{e} and Feeley is memory consumption. The
+method uses memory linear in the size of the input. We wish to extend
+their theory such that memory consumption will lessen, using constant
+memory where possible.
+
+Henglein and Nielsens article from 2010 \cite{Henglein2010} describes
+how parse trees can be compacted as bit-values. Bit-values are strings
+of bits, indicating the choices taken when traversing the NFA. These
+bit-values, combined with the original NFA, can for example be used to
+determine if a string matches a regular expression.
+
+Another important use of the bit-values is to report the contents of
+groupings. There are different degrees of reporting contents of
+groupings. The usual method, used by tools such as Perl and RE2,
+reports only one match per set of parenthesis; This is called a
+regular expression matcher. If a grouping is repeated by e.g. a star,
+thus creating several matches per set of parenthesis, only a so called
+\textbf{full parser} will return all these matches. A bit-value will
+enable the return of all matches. A third option for regular
+expression matching is a language acceptor, simply stating a yes or a
+no depending on whether it matched or not.
+
+%Language acceptor: Ja/nej 
+%regular expression matcher: perl
+
+%% These idea are used in this project; The hope is that by using a more
+%% compact representation of the parse tree, memory consumption will
+%% lessen.
+
+%% This idea is used in this project to construct bitstrings representing
+%% the choices made traversing the NFA with a textstring. These
+%% bitstrings, combined with the orginal NFA, can for example be used to
+%% determine if the string matches the regular expression, how it matches
+%% and also find and rapport any groupings.
+
+By making the functions streaming\footnote{A function is
+  \textbf{streaming}, if it uses a constant amount of working memory.
+  Working memory is all memory used, not counting memory used for
+  input and output.}  and using the bit-strings to communicate between
+the different functions, the hope is that memory consumption will
+lessen.
+
+
+
+%explain online!
+
+
+%explain full!
+
+
+\section*{Objectives}
+The main objective of this project is to implement a streaming regular
+expression full parser and evaluate and compare for example memory
+consumption and run-time usage. The overall structure of the
+communicating processes will be:
+%memory consumption, runtime
+
+\begin{equation*}
+  \text{NFA simulator}\rightarrow\text{filters}\rightarrow ... \rightarrow
+  \text{result extraction}
+\end{equation*}
+
+%% The objective of this project is to implement a regular expression
+%% parser:
+
+%% The objectives of this project is to implement an online regular
+%% expression parser. A function is online if it uses a constant amount
+%% of memory, not counting input and output. The parser should produce
+%% full parsing, i.e. it should be able to return all groupings.
+
+\begin{itemize}
+\item Extend theory from Dub\'{e} and Feeley 
+\item Develop a protocol the processes can use to communicate
+\item The resulting parsing algorithm is to produce bit-values. Every
+  time a decision is made during parsing, a bit-value describing this
+  decision is output. The required solution can be constructed from
+  these bit-values
+\item The algorithm used for NFA simulation is to be based on Dub\'{e} and
+  Feeleys method. It needs to be adapted so that it will be streaming
+  and produce mixed bit-values
+\item Develop filters (streaming processes) that can perform
+  well-defined operations in the mixed bit-values without
+  materializing each bit-value
+\item Compare with other results and implementations
+\end{itemize}
+
+\section*{Method}
+The objectives can be achieved in these steps:
+\begin{enumerate}
+\item Designing a protocol for communicating the mixed bit-values %% Også
+  %% udvikle teori om processer
+\item Implement streaming full parser. This step includes: A regular
+  expression to NFA converter and a NFA and text string matcher
+\item Implement streaming projections. The obvious projections being:
+  A simple yes/no if the string matches the regular expression, only
+  show the matching bit-values and reporting on the groupings
+\item Compare run-time and memory usage of implementation with
+  e.g. Perl or RE2. Perl and RE2 is chosen here for their widespread
+  usage and their performance respectively
+\end{enumerate}
+
+\section*{Learning goals}
+%% analyze, formalize, systematize, determine, summarize, classify,
+%% assess, evaluate, quantify
+At the end of this project I will be able to:
+
+\begin{itemize}
+\item Explain and use regular expressions and finite automaton theory
+%\item Extend the existing algorithms and theory to limit process memory
+\item Analyze algorithm by Dub\'{e} and Feeleys and evaluate memory
+  consumption
+\item Design new streaming algorithm based on Dub\'{e} and Feeley
+\item Implement found algorithm resulting in a streaming NFA
+  simulator and filters
+\item Document and verify implementation
+\item Discuss run-time and memory consumption of the solution, and
+  compare to existing methods and implementations by complexity
+  analysis and benchmarking
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+\end{document}
