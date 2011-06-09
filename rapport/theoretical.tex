@@ -186,11 +186,9 @@ states which is also O($n$), resulting in a total of O($n$).
 }
 
 \subsection{The 'match' filter}
-
-We see no reason for a table of functions for this filter, we only
+Since this filter is very simple -  we only
 call \lstinline{write_bit} and \lstinline{read_bit} once per input
-character. This results in a run time linear in the input length and a
-memory consumption of O(1).
+character - we have elected to just provide a textual summary here. This filter has run time linear in the input length and a memory consumption of O(1).\todo{jan: changed}
 
 \subsection{The 'groupings' filter} 
 
@@ -200,7 +198,7 @@ the 'groupings' filter, $o$ is the input length.
 \lstinline{follow_epsilon} follows all possible transitions for a
 channel. The number of possible transitions is bounded the number of
 actual transitions O($n$). No loops are entered, since these requires
-a character from input. It is called virtually once for every input
+a character from input. It is called virtually\todo{jan: virtually?} once for every input
 character. This leads us to overall complexity for this filter:
 O($n*o$). The memory used is the memory for the NFA and the list of
 active channels, we cannot have more active channels than states:
@@ -290,7 +288,7 @@ This filter is O($o$) complexity both in run time and memory.
 In table \ref{tab:serialize} we have the functions in the 'serialize'
 filter. $o$ is the input length. 
 
-This is not a complicated filter. We basically just read input and
+This is another uncomplicated filter. We basically just read input and
 step through the NFA: O($o*n$). The only memory we allocate is for the
 NFA: O($n$).
 
