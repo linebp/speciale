@@ -52,7 +52,7 @@ For this experiment we used the programs \texttt{main} and
 in sections \vref{sec:backtrackingworstcase.pl} and
 \vref{sec:backtrackingworstcase_mem.pl}.
 
-\subsubsection{Runtimes}
+\subsubsection*{Runtimes}
 
 \begin{figure}
 \centering
@@ -103,7 +103,7 @@ scans the input string for all literals in the regular expressions,
 and it quickly discovers that there is no \textsl{b} in the input
 string, so therefore the regular expression can not match the string.
 
-\subsubsection{Memory usage}
+\subsubsection*{Memory usage}
 
 \begin{figure}
 \centering
@@ -161,7 +161,7 @@ in sections \vref{sec:dfaworstcase.pl} and
 \vref{sec:dfaworstcase_mem.pl}.
 
 
-\subsubsection{Runtimes}
+\subsubsection*{Runtimes}
 
 \begin{figure}
 \centering
@@ -186,7 +186,7 @@ behavior. This would suggest that Tcl chooses to use a DFA in some
 form for this match and RE2 falls back on something else.
 
 
-\subsubsection{Memory usage}
+\subsubsection*{Memory usage}
 
 \begin{figure}
 \centering
@@ -245,7 +245,7 @@ Since we are extracting a value we are using \texttt{main},
 this match. The scripts can be found in sections \vref{sec:email.pl},
 \vref{sec:email_mem.pl} and \vref{sec:email_mbvsize.pl}
 
-\subsubsection{Runtimes}
+\subsubsection*{Runtimes}
 
 \begin{figure}
 \centering
@@ -259,7 +259,7 @@ running in time linear to the input string, with Tcl clearly having
 the lowest constants and our programs the largest. 
 
 
-\subsubsection{Memory usage}
+\subsubsection*{Memory usage}
 \begin{figure}
 \centering
 \includegraphics{benchmarks/memory/email_mem.pdf}
@@ -327,7 +327,7 @@ sections \vref{sec:number.pl}, \vref{sec:number_mem.pl} and
 \vref{sec:number_mbvsize.pl}.
 
 
-\subsubsection{Runtimes}
+\subsubsection*{Runtimes}
 
 \begin{figure}
 \centering
@@ -341,7 +341,7 @@ benchmark. They all appear to be linear in the size of the input
 string. Our programs clearly have bigger constants than the rest. 
 
 
-\subsubsection{Memory usage}
+\subsubsection*{Memory usage}
 
 
 \begin{figure}
@@ -430,7 +430,7 @@ that are not corrected in the version that are presented in this
 thesis. Using the 'groupings' filter with a quantifier will not always
 produce correct results, for example \textsf{(a)*} matched with
 \textsl{aaa} will produce the output \texttt{111} from the
-\texttt{groupings_all} filter. This is not correct. Part of the
+\lstinline{groupings_all} filter. This is not correct. Part of the
 problem is that we are not producing the required bit-values to bind
 the captured bit-values together.
 
