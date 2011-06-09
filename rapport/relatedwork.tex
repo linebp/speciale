@@ -30,9 +30,11 @@ language. These NFAs will have different properties.
 
 \subsubsection{Frisch and Cardelli}
 
-Frisch and Cardelli presents a way of simulating a NFA in their paper
+Frisch and Cardelli presents a method to simulate a NFA in their paper
 \cite{2004:GreedyRegularExpressionMatching}. It works in two passes
-over the input string. The first pass annotates the input string with
+over the input string. 
+
+The first pass annotates the input string with
 enough information to decide which branch to pick in alternations and
 how many times to iterate a quantifier. This is done by reading the
 input from right-to-left and working our way backwards in the NFA, the
@@ -190,7 +192,7 @@ In this example we will be matching \textsf{a*} to the string
 \subsection{Virtual machine}
 Another popular method of matching regular expressions to text is the
 virtual machine approach \cite{Cox2009}. Instead of constructing a
-automaton, we generate bytecode for an interpreter. 
+automaton, we generate byte-code for an interpreter. 
 
 A simple virtual machine would have the ability to execute threads,
 each thread consisting of a regular expression program. Each thread
@@ -283,7 +285,7 @@ T4 & 4 & \textsl{aa\underline{ }} & We have a match. \\
 
 We believe this is how Perl matches \cite{pelreguts}. Running the
 program with debug mode on makes Perl print a textual representation
-of the bytecode the regular expression is compiled into. In section
+of the byte-code the regular expression is compiled into. In section
 \vref{sec:regexmach.pl} we have a small Perl experiment demonstrating
 this feature. The results of running the program:
 \begin{verbatim}
