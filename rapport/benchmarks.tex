@@ -423,14 +423,14 @@ other choice would have been making a shell-script and used a loop and
 
 \subsection{Correctness}
 
-We have to the best of our ability tested the programs for errors. The
-testing has not been exhaustive, as this would require us to test all
-possible combinations of input. We did however turn up a few errors
-that are not corrected in the version that are presented in this
-thesis. Using the 'groupings' filter with a quantifier will not always
+We have to the best of our ability tested the programs for errors. 
+
+This was accomplished by creating a large database of approximately 320+ test cases and repeatedly verifying the programs against this database, both during development and subsequent optimizations and changes. 
+
+Unfortunately, it was discovered late in the project that a specific situation is not handled correctly. The problem has been fixed at the design level but is still present in the implementation: using the 'groupings' filter with a quantifier will not always
 produce correct results, for example \textsf{(a)*} matched with
 \textsl{aaa} will produce the output \texttt{111} from the
-\lstinline{groupings_all} filter. This is not correct. Part of the
+\lstinline{groupings_all} filter, which is not correct. Part of the
 problem is that we are not producing the required bit-values to bind
 the captured bit-values together.
 
