@@ -6,7 +6,7 @@ that we feel are interesting:
 \begin{description}
   \item[RE2] RE2 is a new open source library for C++ written by Russ
     Cox. It is only a little more than a year old. It uses automata
-    when matching. It does not offer backreferences.
+    when matching. It does not offer back-references.
   \item[TCL]
     TCL added regular expression support in a release in 1999. The
     regular expression engine is written by Henry Spencer. It uses a
@@ -127,10 +127,10 @@ them under the total header.
 
 In figure \vref{fig:backtrackingworstcase_mem_maintclre2_normal} we
 again note that RE2 stops before the other two because of memory limitations. The memory usage of our programs and RE2 does not appear
-to be more than linear in the input size, Tcl looks more like some
+to be more than linear in the input size, while Tcl looks more like some
 quadratic function. It is hard to give a good explanation to this
-without knowing Tcls regular expression better, even if it did use a
-NFA for this match the size should still be linear in the input. Tcl
+without knowing Tcls' regular expression engine better; even if it did use a
+NFA for this match, the size should still be linear in the input. Tcl
 has the same asymptotic runtime performance as Main and RE2, but with
 bigger constants; all that extra memory spent is not being put to
 good use. 
