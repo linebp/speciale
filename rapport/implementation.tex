@@ -39,71 +39,7 @@ implementation is to build filters.
 %%   $\upvarepsilon$-transition.
 %% \end{description}
 
-\subsubsection{Character classes}
-\label{sec:ranges_impl}
 
-\begin{figure}
-  \centering 
-  \subfigure[\textsf{[a-c]}]{
-    \includegraphics{implementation/range1.pdf}
-    \label{fig:range1}
-  }
-  \subfigure[\textsf{a\textbar b\textbar c}]{
-    \includegraphics{implementation/range2.pdf}
-    \label{fig:range2}
-  }
-  \caption{A simple character class-transition example}
-  \label{fig:ranges}
-\end{figure}
-
-Character classes are part of the extension we made to the regular
-expression definition. When implementing, we have the choice of
-rewriting character classes in terms of the original regular
-expressions, but as we can see in figure \vref{fig:ranges}, this
-quickly becomes unwieldy. When we rewrite we add almost two states per
-character matched by the character class, instead of adding just one
-state for the whole character class. What we want is a NFA similar to
-figure \ref{fig:range1}, not figure \ref{fig:range2}.
-
-There are several ways of obtaining this goal. Perl uses a bitmap to
-indicate membership of a range, for each character in the character
-set there is a bit in the bitmap. To decide membership the bit
-corresponding to the character is looked up. RE2 uses a balanced
-binary tree, each node in the tree corresponds to either a whole range
-or a literal character, the tree is then searched when deciding
-membership. Each method has its advantages and drawbacks. The bitmap
-is of constant size, so for small character classes, it will be
-unnecessarily large, but the time to look up a value in the bitmap is
-also constant and very fast. The balanced binary tree, has its
-advantages for character classes with few ranges and literal
-characters, since it will then be small in size and look up times. The
-drawbacks are of course that it grows in size and look up times with
-the character class.
-
-For this project an even simpler solution was chosen: A simple linked
-list of ranges. The literal characters will be represented as ranges
-of length one. On other words, we will have one linked list per
-character class, and the number of elements in each linked list is the
-number of literals and ranges in the character class. Worst case we
-will have to look through all members of a linked list to decide
-membership of a character class. This is simplistic, but sufficient.
-
-%% There should not be any serious
-%% performance issues for simple character classes with few ranges and
-%% literal characters.
-%% \begin{lstlisting}
-%% struct Range 
-%% {
-%%   unsigned int lo;
-%%   unsigned int hi;
-%%   struct Range *next;
-%% };
-%% \end{lstlisting}
-%% The two unsigned integers are used to store the beginning and end of
-%% the range, in the case of a single literal they are the same. The
-%% \lstinline{next}-pointer points to the next range in the list. A
-%% \lstinline{Range}-pointer and a flag to indicate whether or not the
-%% character class is negated is added to the \lstinline{State} struct.
 
 \subsection{Regular expression to NFA}
 
@@ -223,6 +159,72 @@ stackdepth grow to a maximum.
 %% often used instead of the empty string, which is very hard to write
 %% explicitly seeing as it is empty.
 
+\subsubsection{Character classes}
+\label{sec:ranges_impl}
+
+\begin{figure}
+  \centering 
+  \subfigure[\textsf{[a-c]}]{
+    \includegraphics{implementation/range1.pdf}
+    \label{fig:range1}
+  }
+  \subfigure[\textsf{a\textbar b\textbar c}]{
+    \includegraphics{implementation/range2.pdf}
+    \label{fig:range2}
+  }
+  \caption{A simple character class-transition example}
+  \label{fig:ranges}
+\end{figure}
+
+Character classes are part of the extension we made to the regular
+expression definition. When implementing, we have the choice of
+rewriting character classes in terms of the original regular
+expressions, but as we can see in figure \vref{fig:ranges}, this
+quickly becomes unwieldy. When we rewrite we add almost two states per
+character matched by the character class, instead of adding just one
+state for the whole character class. What we want is a NFA similar to
+figure \ref{fig:range1}, not figure \ref{fig:range2}.
+
+There are several ways of obtaining this goal. Perl uses a bitmap to
+indicate membership of a range, for each character in the character
+set there is a bit in the bitmap. To decide membership the bit
+corresponding to the character is looked up. RE2 uses a balanced
+binary tree, each node in the tree corresponds to either a whole range
+or a literal character, the tree is then searched when deciding
+membership. Each method has its advantages and drawbacks. The bitmap
+is of constant size, so for small character classes, it will be
+unnecessarily large, but the time to look up a value in the bitmap is
+also constant and very fast. The balanced binary tree, has its
+advantages for character classes with few ranges and literal
+characters, since it will then be small in size and look up times. The
+drawbacks are of course that it grows in size and look up times with
+the character class.
+
+For this project an even simpler solution was chosen: A simple linked
+list of ranges. The literal characters will be represented as ranges
+of length one. On other words, we will have one linked list per
+character class, and the number of elements in each linked list is the
+number of literals and ranges in the character class. Worst case we
+will have to look through all members of a linked list to decide
+membership of a character class. This is simplistic, but sufficient.
+
+%% There should not be any serious
+%% performance issues for simple character classes with few ranges and
+%% literal characters.
+%% \begin{lstlisting}
+%% struct Range 
+%% {
+%%   unsigned int lo;
+%%   unsigned int hi;
+%%   struct Range *next;
+%% };
+%% \end{lstlisting}
+%% The two unsigned integers are used to store the beginning and end of
+%% the range, in the case of a single literal they are the same. The
+%% \lstinline{next}-pointer points to the next range in the list. A
+%% \lstinline{Range}-pointer and a flag to indicate whether or not the
+%% character class is negated is added to the \lstinline{State} struct.
+
 \subsection{The simulator}
 
 We have built the NFA and the next step is to simulate it. This
@@ -316,9 +318,9 @@ by adding alternations.
 
 
 \subsection{Filters}
+When taking a closer look at how filters should be implemented in practice, there are some interesting considerations. These are detailed below.
 
 \subsubsection{Groupings}
-
 As we described in section \vref{sec:groupings_filter_analysis}, this
 is the filter that should (more or less) throw away any mixed
 bit-values not generated in a capturing parenthesis. In order to do

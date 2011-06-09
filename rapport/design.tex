@@ -104,8 +104,8 @@ bit-values. Each time we are faced with a choice when traversing the
 NFA, we will record that choice with a bit-value. This will enable us
 to recreate the exact path through the NFA. See also \cite{Dube2000}.
 
-For reasons we will discuss later we will introduce the notion of
-mixed bit-values in this thesis. When simulating the NFA we will
+For reasons we will discuss in more detail later, we introduce the notion of
+mixed bit-values. When simulating the NFA we will
 simultaneously be creating many bit-values which may or may not end up
 in an actual match. These individual bit-values will be referred to as
 a channel. Mixed bit-values is the set of all these channels and they
@@ -170,7 +170,7 @@ filters.
 
 %% \todo[inline]{What is a filter? The whole deal with the pipes!}
 %% \todo[inline]{Pros and cons to filters vs other solutions}
-
+\paragraph{}
 We present the overall architecture in figure
 \vref{fig:architecture}. In the first program we have the matcher,
 this program will take the regular expression as an argument and have

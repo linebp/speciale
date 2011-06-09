@@ -1,13 +1,13 @@
 \subsection{Filters}
-
+\todo{jan: verify post proofreading}
 We have now established that filters are stand-alone programs that
-takes input, performs some projection and outputs the result. In this
-subsection we will give a more detailed description of the filters
+takes input, performs some projection and outputs the result. 
+This leads us to a more detailed description of the filters
 developed for this thesis. 
 
-The filters can be combined to make a whole, naturally some orders of
-combining makes more sense than others. For example will it make sense
-to have filters removing unnecessary information as early as possible,
+The filters can be combined to make a whole; though naturally some 
+combinations makes more sense than others. For example it generally makes sense
+to put filters that remove unnecessary information early in the stream,
 to reduce the input data-sizes for downstream filters.
 
 %% \todo[inline]{Better introduction or consider merging with architecture}
@@ -17,9 +17,10 @@ to reduce the input data-sizes for downstream filters.
 
 \subsubsection{The 'match' filter}
 
-\paragraph{Input} Any mixed bit-values or bit-values
-\paragraph{Output} A single value indicating match or no match.
-\paragraph{}
+\begin{description}
+    \item[Input] Any mixed bit-values or bit-values
+    \item[Output] A single value indicating match or no match.
+\end{description}
 
 This is a simple filter. The input is scanned for a \texttt{t} control
 character, if present we output a \texttt{t} otherwise we output a
@@ -52,9 +53,11 @@ t
 
 \subsubsection{The 'trace' filter}
 \label{sec:desc_materialize}
-\paragraph{Input} Mixed bit-values
-\paragraph{Output} Bit-values
-\paragraph{}
+
+\begin{description}
+    \item[Input] Mixed bit-values
+    \item[Output] Bit-values
+\end{description}
 
 The mixed bit-values is a way of keeping track of multiple paths
 through the NFA. This filter will remove all channels from the mixed
@@ -80,9 +83,11 @@ match. The filter should return the empty string if there is no match.
 
 \subsubsection{The 'groupings' filter}
 \label{sec:groupings_filter_analysis}
-\paragraph{Input} Mixed bit-values
-\paragraph{Output} Mixed bit-values for rewritten regular expression
-\paragraph{}
+
+\begin{description}
+    \item[Input] Mixed bit-values
+    \item[Output] Mixed bit-values for rewritten regular expression
+\end{description}
 
 This filter facilitates reporting the content of captured groups. The
 filter outputs the mixed bit-values associated with the groupings. By
