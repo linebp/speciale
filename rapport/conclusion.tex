@@ -1,20 +1,35 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this thesis we have designed and demonstrated a prototype of our design and
-compared it to existing implementations of regular expression
-engines. We have explained the reasoning behind our design and reasoned about 
-theoretical performance, both in terms of run-time and storage requirements. We then
-implemented the design, and demonstrated its viability in practice, and that our expected asymptotic bounds holds. 
-We have discussed a weak point in the design regarding the size of
-the mixed bit-values output which in turn determines the run-time and in
+In this thesis we have designed and demonstrated a prototype of our
+design and compared it to existing implementations of regular
+expression engines. We have explained the reasoning behind our design
+and reasoned about theoretical performance, both in terms of run-time
+and storage requirements. We then implemented the design, and
+demonstrated its viability in practice, and that our expected
+asymptotic bounds holds.  
+
+We have discussed a weak point in the design regarding the size of the
+mixed bit-values output which in turn determines the run-time and in
 one case the memory consumption of the filters. We have only observed
 a linear relationship between the size of the input string and the
 size of the mixed bit-values, though it could in theory be as big as
 the product of the sizes of the input string and the regular
 expression. \todo{fixme}
 
-In addition to this, we have also discussed regular expression and finite automatons, and conducted an analysis of Dub\'{e} and Feeleys algorithm to \todo{whatever the fuck its for}
+A drawback for ordinary users is the need for rewriting the regular
+expression for some of the filters. This has to be done by the user
+according to a rewriting function, it is a fairly straightforward
+procedure, but it is a big hindrance for the design presented here to
+be used in a more mainstream setting.
 
-Finally, we would like to note that while this project obviously only constitutes a prototype, the concept has some interesting potential applications. Creative use of the 'trace' and 'serialize' filters can, in some cases, be used for compression, to name one example. The idea is that, if you have a regular expression
-matching a string, the resulting bit-values will take up less space than the string itself. 
+In addition to this, we have also discussed regular expression and
+finite automatons, and conducted an analysis of Dub\'{e} and Feeleys
+algorithm to \todo{whatever the fuck its for}
+
+Finally, we would like to note that while this project obviously only
+constitutes a prototype, the concept has some interesting potential
+applications. Creative use of the 'trace' and 'serialize' filters can,
+in some cases, be used for compression, to name one example. The idea
+is that, if you have a regular expression matching a string, the
+resulting bit-values will take up less space than the string itself.

@@ -1,8 +1,8 @@
 \section{Evaluation}
 \label{sec:evaluation}
 In this section we will be looking at how our programs compare to
-other implementations. We have chosen a few languages and libraries that we feel
-are interesting:
+other implementations. We have chosen a few languages and libraries
+that we feel are interesting:
 \begin{description}
   \item[RE2] RE2 is a new open source library for C++ written by Russ
     Cox. It is only a little more than a year old. It uses automata
@@ -421,11 +421,27 @@ already has a perfectly good regular expression engine built in. Our
 other choice would have been making a shell-script and used a loop and
 \texttt{cat}. 
 
+\subsection{Correctness}
+
+We have to the best of our ability tested the programs for errors. The
+testing has not been exhaustive, as this would require us to test all
+possible combinations of input. We did however turn up a few errors
+that are not corrected in the version that are presented in this
+thesis. Using the 'groupings' filter with a quantifier will not always
+produce correct results, for example \textsf{(a)*} matched with
+\textsl{aaa} will produce the output \texttt{111} from the
+\texttt{groupings_all} filter. This is not correct. Part of the
+problem is that we are not producing the required bit-values to bind
+the captured bit-values together.
 
 \subsection{Conclusion}
 
 We observe that our programs do not suffer from either the
 backtracking worst-case or the DFA worst-case problems.
+
+\paragraph{Correctness} We do not in all situations produce correct
+output on all combinations of regular expressions, input strings and
+filters. See example in section above.
 
 \paragraph{Simple acceptance} We can compete on even footing with the
 best when it comes to a simple acceptance decision. Our main program
