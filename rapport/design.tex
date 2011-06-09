@@ -68,6 +68,21 @@ Whenever a node has more than one outgoing edge, a string is added to
 the edge, containing just enough information to decide which edge was
 taken.
 
+NFA simulation with Dubè and Feeleys algorithm takes up takes up space
+linear in the regular expression. We need to allocate space for the
+NFA and for a list of active states, both use space linear in the
+regular expression.
+
+Added to this is the storage requirements for output, which will take
+up space linear in the product of the size of the regular expression
+and the input string: For each input character we can at most take
+every transition once. This is the same asymptotic behavior as the
+compacted version from Henglein and Nielsens paper.
+
+So the total memory cost, counting both the simulation phase and the
+saving the output, is linear in the product of the size of the regular
+expression and the input string.
+
 
 \subsubsection{Bit-values and mixed bit-values}
 
