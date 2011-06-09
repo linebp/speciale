@@ -1,16 +1,20 @@
 \section{Analysis of algorithms}
 \label{sec:theoretical}
 In this section we analyze the complexity of the various programs and
-filters. The analysis is presented as
-tables of functions, with a short description of what it does and what
-other functions it calls and whether or not this is done in a
-loop. Most importantly we will include the complexity, for run-time and storage requirements of each function
-in the tables. The analysis is a worst-case analysis - in some situations this outcome is unlikely barring a pathological input. This will be noted in the case.\todo{jan: verify and check that this is actually noted}
+filters. The analysis is presented as tables of functions, with a
+short description of what it does and what other functions it calls
+and whether or not this is done in a loop. Most importantly we will
+include the complexity, for run-time and storage requirements of each
+function in the tables. The analysis is a worst-case analysis - in
+some situations this outcome is unlikely barring a pathological
+input. Straightforward cases will not be commented, however some
+entries in the table will require a more detailed description. These
+will be given where necessary. Each component is summarized based on
+the contents of the function tables.
 
 In the following sections $n$ denotes the length of the regular
 expression and $m$ is the length of the input string.
 
-Each component is then summarized based on the contents of the function tables.
 
 \subsection{Constructing the NFA}
 
@@ -186,9 +190,11 @@ states which is also O($n$), resulting in a total of O($n$).
 }
 
 \subsection{The 'match' filter}
-Since this filter is very simple -  we only
-call \lstinline{write_bit} and \lstinline{read_bit} once per input
-character - we have elected to just provide a textual summary here. This filter has run time linear in the input length and a memory consumption of O(1).\todo{jan: changed}
+Since this filter is very simple - we only call \lstinline{write_bit}
+and \lstinline{read_bit} once per input character - we have elected to
+just provide a textual summary here. This filter has run time linear
+in the length of the input and a memory consumption of
+O(1).
 
 \subsection{The 'groupings' filter} 
 
@@ -198,7 +204,7 @@ the 'groupings' filter, $o$ is the input length.
 \lstinline{follow_epsilon} follows all possible transitions for a
 channel. The number of possible transitions is bounded the number of
 actual transitions O($n$). No loops are entered, since these requires
-a character from input. It is called virtually\todo{jan: virtually?} once for every input
+a character from input. It is called for almost every 
 character. This leads us to overall complexity for this filter:
 O($n*o$). The memory used is the memory for the NFA and the list of
 active channels, we cannot have more active channels than states:
