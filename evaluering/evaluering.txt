@@ -1,0 +1,48 @@
+I read the thesis ``Grid Replicated Storage for the Minimum Intrusion
+Grid'' by Jan Lykke Wiberg as part of my evaluate-anothers-thesis
+requirement. 
+
+Overall:
+
+The layout and the choice of font for the thesis is pleasing, the
+typesetting looks professional. The margins and such makes it easy to
+read.
+
+The English is fluid and of high quality. 
+
+The content is presented in a natural order. Alternatives are
+presented whenever a choice is made. 
+
+The number of examples and graphs are perhaps a bit on the low side,
+but when reading the thesis, they are placed suitably.
+
+In detail: 
+
+The introduction is well structured. It has the necessary content such
+as motivation, delineation of the project and an overview.
+
+The related work section has an a categorized overview of the research
+into this area, and seems to cover all major areas although at a high level.
+
+There is an analysis of the situation, some criteria were given in
+the introduction which are expanded in more detail. A look into the
+how the system will actually be used real time is also given. The
+analysis is summarized in a list with the most important points.
+
+The high level design of the system is given in section 4. Figures
+complements the text.
+
+Section 5 goes into detail with the design, here we have a lot of the
+low level choices. 
+
+Section 8 is an evaluation of the design and choices made. It states
+the criteria under which the project is evaluated. Contains some good
+graphs presenting the data from the experiments. 
+
+Section 9 is future work, it gives plenty for the interested reader to
+continue with.
+
+
+General thoughts:
+The thesis seems relatively thorough though not overly ambitious in
+regards to making use of advanced techniques.
