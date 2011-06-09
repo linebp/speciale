@@ -401,14 +401,14 @@ rewrite.
 \subsubsection{Trace}
 
 We will limit this filter to only output one channel with a match. In
-the current system this is not actually a limitation, as we are using
+the current system this is not actually a limitation - as we are using
 Thompsons method for matching, there will only ever be one channel
 with a match.
 
 All channels are read and the bit-values are saved separately. Every
 time we read a channel-split operator we will have to allocate a new
 chunk of memory and copy the bit-values we have accumulated up to this
-point. When the chunk of memory becomes to small, we will enlarge to a
+point. When the chunk of memory becomes too small, we will enlarge to a
 chunk twice the size. When we reach the end of the input stream, we
 will know if there is a match and be able to output the bit-values
 that make up the match.
@@ -420,5 +420,4 @@ This is the filter that outputs what is matched. We will need the
 regular expression, that matches the bit-values, to form the NFA. The
 NFA is traversed using the bit-values. As we go along we output the
 symbols the transitions are marked with and the escaped symbols in the
-bit-values. This should result in a string being outputted of what was
-matched.
+bit-values. The output result is what was matched, as a string.

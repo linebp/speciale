@@ -419,5 +419,4 @@ consumption. This optimization is well worth it.
 We would expect no performance gain on this optimization when the
 regular expression consists of a string of literals, that is we only
 create one channel when simulating the NFA. This is however not a very
-useful application of regular expressions, there are faster ways of
-comparing two strings.
+useful application of regular expressions. Instead, a simple string compare would suffice.
