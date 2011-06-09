@@ -88,9 +88,9 @@ We aim to address these topics in this thesis:
 
 \item Create a prototype implementation
 
-\item Compare the prototype with existing solutions 
+\item Compare the prototype with existing solutions and evaluate our own results
 
-\item Conclude and propose extensions and improvements on the work
+\item Conclude, and propose extensions and improvements on the work
 \end{itemize}
 
 \subsubsection{Limitations}
@@ -98,7 +98,7 @@ We aim to address these topics in this thesis:
 The focus is on designing and implementing a streaming regular
 expression engine. There are many general purpose features and
 optimizations that can be considered necessary in a full-fledged
-regular expression engine that are only peripherally considered
+regular expression engine but that we only consider peripherally
 here. In situations where we are faced with a choice, we have
 generally favored simplicity and robustness.  In several cases, we
 only theoretically discuss alternative solutions and do not provide a
@@ -107,9 +107,6 @@ prototype.%\todo{jan: Ok?}
 %% and replace
 
 \subsubsection{Implementation Choices}
-%\todo[inline]{jan: Mest filler så dette her kapitel ikke var så kort,
-%  men du manglede det vist} 
-
 Some choices were made early in the planning phase. This includes the
 choice of programming language. There are several good reasons for
 choosing C: We have previous experience developing in this language,
