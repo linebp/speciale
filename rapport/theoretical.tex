@@ -1,16 +1,16 @@
 \section{Analysis of algorithms}
 \label{sec:theoretical}
 In this section we analyze the complexity of the various programs and
-filters. We will not present pseudo code for the functions, it was not
-within the capabilities of the authors to boil down 500+ lines of
-C-code to half a page worth of orderly pseudo code. Instead we present
+filters. The analysis is presented as
 tables of functions, with a short description of what it does and what
 other functions it calls and whether or not this is done in a
-loop. Most importantly we will include the complexity of each function
-in the tables. 
+loop. Most importantly we will include the complexity, for run-time and storage requirements of each function
+in the tables. The analysis is a worst-case analysis - in some situations this outcome is unlikely barring a pathological input. This will be noted in the case.\todo{jan: verify and check that this is actually noted}
 
 In the following sections $n$ denotes the length of the regular
 expression and $m$ is the length of the input string.
+
+Each component is then summarized based on the contents of the function tables.
 
 \subsection{Constructing the NFA}
 
@@ -22,7 +22,7 @@ comment.
 
 \lstinline{ptrlist_patch} is the function that patches a list of
 dangling pointers to a state. The pointers are only dangling once in
-their lifetime, they do not become dangling again once they are
+their lifetime and do not become dangling again once 
 patched to a state. The upper bound on the total number of dangling
 pointers is two times the number of states and the state count is
 linear in the size of the regular expression, making the upper bound
